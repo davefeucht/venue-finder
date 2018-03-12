@@ -1,13 +1,15 @@
 "use strict";
 
-var access_token = "";
+let access_token = "";
 
 function foursquareAuth(step, ...data) {
     if(step === 'redirect') {
         location.replace("https://foursquare.com/oauth2/authenticate?client_id=ZK1LL4LNA35TMQHPJORGHTWMP1LJVWLTVPHA4FCVBMLLZHJ3&response_type=code&redirect_uri=http://dev.throughapinhole.com/foursquare/");
     }
     else if (step === 'get-token') {
-        alert(data[0]);
+        $.get("https://foursquare.com/oauth2/access_token?client_id=ZK1LL4LNA35TMQHPJORGHTWMP1LJVWLTVPHA4FCVBMLLZHJ3&client_secret=1KG5RCUPH0RDODKDE4KOIOAFL13KPV41AZNJE4ZN4WY1VDVP&grant_type=authorization_code&redirect_uri=http://dev.throughapinhole.com/foursquare&code=" + data[0], function(response) {
+            alert(response); 
+        });
     }
 }
 
