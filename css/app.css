@@ -1,0 +1,21 @@
+body {
+  width: 100%;
+  font-size: 120%;
+}
+
+.search-form {
+  width: 100%;
+  margin: 10px;
+}
+
+.search-button {
+  margin: 10px 10px 10px 0;
+}
+
+.radius-selector {
+  margin: 5px;
+}
+
+.type-box {
+  margin: 5px;
+}

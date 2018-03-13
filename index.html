@@ -1,13 +1,14 @@
 <html>
 <head>
   <title>Foursquare Venue Finder</title>
+  <link rel="stylesheet" type="text/css" href="css/app.css">
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="js/site.js"></script>
 </head>
 <body>
     <div class="search-form">
       <div class="radius-selector">
-      <span class="radius-selector-label">Radius: </span>
+      <span class="radius-selector-label">Search Radius: </span>
       <span class="radius-selector-dropdown">
         <select id="radius">
           <option value="1">1 km</option>
@@ -18,12 +19,14 @@
       </span>
       </div>
       <div class="type-box">
-      <span class="type-box-label">Type: </span>
+      <span class="type-box-label">Type of venue: </span>
       <span class="type-box-input">
         <input type="text" id="venue-type" />
       </span>
       </div>
-      <button id="search-button">Search</button>
+      <div class="search-button">
+        <button id="search-button">Search</button>
+      </div>
     </div>
     <div class="message-div"></div>
     <hr />
