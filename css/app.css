@@ -1,21 +1,56 @@
-body {
-  width: 100%;
-  font-size: 120%;
-}
-
 .search-form {
-  width: 100%;
+  display: grid;
   margin: 10px;
+  border-bottom: 1px solid black;
+  grid-template-rows: 50px 50px 50px;
 }
 
-.search-button {
-  margin: 10px 10px 10px 0;
+@media screen and (min-width: 700px) {
+  .search-form {
+    grid-template-columns: 20% auto 20%;
+  }
 }
 
 .radius-selector {
+  grid-row-start: 1;
+  grid-column-start: 1;
   margin: 5px;
 }
 
+@media screen and (min-width: 700px) {
+  .radius-selector {
+    grid-column-start: 2;
+  }
+}
+
+.radius-selector select {
+  width: 50%;
+}
+
 .type-box {
+  grid-row-start: 2;
+  grid-column-start: 1;
   margin: 5px;
+}
+
+@media screen and (min-width: 700px) {
+  .type-box {
+    grid-column-start: 2;
+  }
+}
+
+.type-box input {
+  width: 50%;
+}
+
+.search-button {
+  grid-row-start: 3;
+  grid-column-start: 1;
+  margin: 10px 10px 10px 0;
+}
+
+@media screen and (min-width: 700px) {
+  .search-button {
+    grid-column-start: 2;
+  }
 }
