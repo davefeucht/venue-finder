@@ -22,7 +22,7 @@ function createCORSRequest(method, url) {
 }
 
 function foursquareRequest(radius, type, ...coordinates) {
-    let radius_meters = radius * 1000;
+    let radius_meters = 3 * 1000;
     let now = new Date();
     let date_string = now.getFullYear().toString() + (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
     let url = REQUEST_BASE_URL + 
@@ -45,9 +45,11 @@ function foursquareRequest(radius, type, ...coordinates) {
             
             $(".results-div").text("");
             venues.forEach(venue => {
+              let phoneNumber = (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone + "<br />" : venue.contact.phone)
               $(".results-div").append("<h3>" + venue.name + "</h3>");
               $(".results-div").append((venue.location.address !== undefined ? venue.location.address + "<br />" : " "));
               $(".results-div").append((venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + " " + (venue.location.city !== undefined ? venue.location.city : " ") + "<br />");
+              $(".results-div").append(phoneNumber);
             });
         };
         xhr.onerror = function() {
@@ -62,11 +64,20 @@ function search() {
   let radius = $("#radius").val();
   let search_type = $("#venue-type").val();
 
+  $(".message-div").text("");
+
+  if(radius < 1) {
+      $(".message-div").text("Please select a search radius");
+      return;
+  }
+
   if("geolocation" in navigator) {
     navigator.geolocation.getCurrentPosition(
     function(position) {
-        foursquareRequest(radius, search_type, position.coords.latitude, position.coords.longitude);
-        $(".message-div").text("Your position is: " + position.coords.latitude + ", " + position.coords.longitude);
+        let requestSuccess = foursquareRequest(radius, search_type, position.coords.latitude, position.coords.longitude);
+        if(requestSuccess) { 
+            $(".message-div").text("Your position is: " + position.coords.latitude + ", " + position.coords.longitude);
+        }
     },
     function(error) {
         $(".message-div").text(error.code + ": " + error.message);
