@@ -1,0 +1,7 @@
+Requirements:
+
+-Optimized for phone. People will be looking up venues near them when they are out looking for somewhere to go, not primarily at home on their computer.
+-User should be allowed to choose the distance radius from a dropdown with options of 1, 3, 5, 10 km. This should be required (should be no 'empty' choice). Default 3km.
+-User should be allowed to enter a type of venue, i.e. 'Restaurant', 'Record shop', 'Bike shop'. This should be optional. If nothing is entered, all types of venues are searched.
+-Options should be shown at the top of the window, with the list of the results shown below.
+-A 'jump to top' button should be displayed which will return the user to the top of the page.

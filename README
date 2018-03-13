@@ -1,0 +1,11 @@
+/************
+  
+Foursquare Venue Finder
+
+Author: Dave Feucht
+Version: 1.0
+Description: Simple web application which uses the Foursquare API to display a list
+of venues within a chosen radius of the user's location, with an optional type
+of venue specified by the user.
+
+************/
