@@ -5,6 +5,28 @@
   <script src="js/site.js"></script>
 </head>
 <body>
-    <div class="message-div">Foo</div>
+    <div class="search-form">
+      <div class="radius-selector">
+      <span class="radius-selector-label">Radius: </span>
+      <span class="radius-selector-dropdown">
+        <select id="radius">
+          <option value="1">1 km</option>
+          <option value="3" selected>3 km</option>
+          <option value="5">5 km</option>
+          <option value="10">10 km</option>
+        </select>
+      </span>
+      </div>
+      <div class="type-box">
+      <span class="type-box-label">Type: </span>
+      <span class="type-box-input">
+        <input type="text" id="venue-type" />
+      </span>
+      </div>
+      <button id="search-button">Search</button>
+    </div>
+    <div class="message-div"></div>
+    <hr />
+    <div class="results-div">None</div>
 </body>
 </html>
