@@ -90,6 +90,17 @@
     border-bottom: 1px solid black;
 }
 
+.no-results {
+    margin-left: 10px;
+}
+
+.to-top-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    cursor: pointer;
+}
+
 .error-text {
     color: red;
     margin: 3px;

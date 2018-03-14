@@ -8,6 +8,13 @@ const CLIENT_SECRET = "1KG5RCUPH0RDODKDE4KOIOAFL13KPV41AZNJE4ZN4WY1VDVP";
 const INTENT = "checkin";
 
 /************
+*  Function to scroll the page back to the top
+************/
+function toTop() {
+    $('html, body').animate({ scrollTop: 0 }, 'fast');
+}
+
+/************
 *  Function to create a CORS request so that the HTTP request can be sent cross-domain
 *  Takes as parameters the HTTP method, and the URL to make the request to
 *  Returns an XMLHttpRequest object
@@ -51,7 +58,7 @@ function foursquareRequest(radius, type, coordinates) {
             let venues = responseObject.response.venues;
 
             if (venues.length === 0) {
-                $(".results-div").text("No results available");
+                $(".results-div").append("<div class=\"no-results\">There are no " + type + "(s) within " + radius + " km</div>");
             } else {
                 venues.forEach(venue => {
                     let phoneNumber = venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone + "<br />" : venue.contact.phone;
@@ -112,4 +119,5 @@ function search() {
 *************/
 $(document).ready(function () {
     $("#search-button").on("click", search);
+    $(".to-top-button").on("click", toTop);
 });
