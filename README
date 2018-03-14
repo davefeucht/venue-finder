@@ -9,3 +9,21 @@ of venues within a chosen radius of the user's location, with an optional type
 of venue specified by the user.
 
 ************/
+
+-index.html
+  Index page
+
+-css/app.css
+  CSS styles
+
+-src/site.js
+  Source JS code (ES6)
+
+-js/site.js
+  Transpiled JS code (Babel)
+
+-NOTES
+  Notes about the application: requirements and possible improvements
+
+-README
+  This file
