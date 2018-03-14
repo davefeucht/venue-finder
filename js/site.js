@@ -50,14 +50,18 @@ function foursquareRequest(radius, type, coordinates) {
             let responseObject = JSON.parse(xhr.responseText);
             let venues = responseObject.response.venues;
 
-            venues.forEach(venue => {
-                let phoneNumber = venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone + "<br />" : venue.contact.phone;
-                $(".results-div").append("<div class=\"venue-div " + venue.id + "\"></div>");
-                $("." + venue.id).append("<div class=\"venue-name\">" + venue.name + "</div>");
-                $("." + venue.id).append(venue.location.address !== undefined ? venue.location.address + "<br />" : " ");
-                $("." + venue.id).append((venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + " " + (venue.location.city !== undefined ? venue.location.city : " ") + "<br />");
-                $("." + venue.id).append(phoneNumber);
-            });
+            if (venues.length === 0) {
+                $(".results-div").text("No results available");
+            } else {
+                venues.forEach(venue => {
+                    let phoneNumber = venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone + "<br />" : venue.contact.phone;
+                    $(".results-div").append("<div class=\"venue-div " + venue.id + "\"></div>");
+                    $("." + venue.id).append("<div class=\"venue-name\">" + venue.name + "</div>");
+                    $("." + venue.id).append(venue.location.address !== undefined ? venue.location.address + "<br />" : " ");
+                    $("." + venue.id).append((venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + " " + (venue.location.city !== undefined ? venue.location.city : " ") + "<br />");
+                    $("." + venue.id).append(phoneNumber);
+                });
+            }
         };
         xhr.onerror = function () {
             $(".message-div").text("There was an error sending the request.");
