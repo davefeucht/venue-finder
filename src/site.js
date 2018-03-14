@@ -34,6 +34,9 @@ function createCORSRequest(method, url) {
     return xhr;
 }
 
+/************
+*  Function to display an error message upon failure to get location
+************/
 function displayError(error) {
     $(".message-div").text(error.code + ": " + error.message);
 }
