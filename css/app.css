@@ -1,3 +1,20 @@
+:root {
+  --header-color: #7EC0EE;
+}
+
+.header-div {
+  display: grid;
+  color: #FFFFFF;
+  background-color: var(--header-color);
+  grid-template-rows: 5px 30px 5px;
+  padding-left: 5px;
+  border: 1px solid black;
+}
+
+.header-text {
+  grid-row-start: 2;
+}
+
 .search-form {
   display: grid;
   margin: 10px;
@@ -53,4 +70,27 @@
   .search-button {
     grid-column-start: 2;
   }
+}
+
+.venue-div {
+    border: 1px solid black;
+    margin: 5px 5px 10px 5px;
+    font-size: 120%;
+}
+
+.venue-name {
+    color: #FFFFFF;
+    background-color: var(--header-color);
+    border-bottom: 1px solid black;
+}
+
+.error-text {
+    color: red;
+    margin: 3px;
+}
+
+.h1 {
+  font-size: 150%;
+  font-weight: bold;
+  grid-row-start: 2;
 }
