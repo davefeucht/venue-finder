@@ -18,3 +18,4 @@ Improvements:
 -Displaying how many people are checked in at the place currently
 -Less technical error messages
 -Make Client Key and Client Secret not readable in the JS source
+-Make validation message on search radius go away on change of search radius, not on click of button
