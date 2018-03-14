@@ -23,6 +23,9 @@ of venue specified by the user.
 -js/site.js
   Transpiled JS code (Babel)
 
+-img/to-top-button.png
+  Image used for the To Top button
+
 -NOTES
   Notes about the application: requirements and possible improvements
 
