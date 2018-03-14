@@ -78,6 +78,12 @@
     font-size: 120%;
 }
 
+@media screen and (min-width: 700px) {
+  .venue-div {
+    width: 50%;
+  }
+}
+
 .venue-name {
     color: #FFFFFF;
     background-color: var(--header-color);
