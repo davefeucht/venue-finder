@@ -16,3 +16,4 @@ Improvements:
 -Displaying a loading spinner or other indicator when results are loading
 -Adding option to view 'tips' for each result
 -Displaying how many people are checked in at the place currently
+-Less technical error messages

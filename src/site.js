@@ -1,6 +1,6 @@
 "use strict";
 
-//Setup constants to hold parameters of the HTTP requests which won't be variable
+//Setup constants to hold parameters of the HTTP requests which won't change based on user input
 const REQUEST_BASE_URL = "https://api.foursquare.com/v2/venues/search?ll=";
 const CLIENT_ID = "ZK1LL4LNA35TMQHPJORGHTWMP1LJVWLTVPHA4FCVBMLLZHJ3";
 const CLIENT_SECRET = "1KG5RCUPH0RDODKDE4KOIOAFL13KPV41AZNJE4ZN4WY1VDVP";
@@ -45,9 +45,15 @@ function displayError(error) {
 *  the page with content.
 ************/
 function foursquareRequest(radius, type, coordinates) {
-    let radius_meters = 3 * 1000;
+
+    //Since radius is in kilometers, we multiply to get meters, which is what Foursquare expects
+    let radius_meters = radius * 1000;
+
+    //Set up the YYYYMMDD date string
     let now = new Date();
     let date_string = now.getFullYear().toString() + (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
+
+    //Set up the full request URL
     let url = REQUEST_BASE_URL + 
       coordinates.latitude + "," + coordinates.longitude + 
       "&intent=" + INTENT + 
@@ -56,19 +62,25 @@ function foursquareRequest(radius, type, coordinates) {
       "&client_id=" + CLIENT_ID + 
       "&client_secret=" + CLIENT_SECRET + 
       "&v=" + date_string; 
+
+    //Get a new CORS request
     let xhr = createCORSRequest("GET", url);
 
+    //Error handling if CORS is not enabled in browser
     if(!xhr) {
         $(".message-div").text("CORS is not supported by your browser");
     } 
     else {
+        //Setup the success and fail callbacks for the XHR
         xhr.onload = function() {
             let responseObject = JSON.parse(xhr.responseText);
             let venues = responseObject.response.venues;
             
+            //If there were no results, display a message
             if(venues.length === 0) {
                 $(".results-div").append("<div class=\"no-results\">There are no " + type + "(s) within " + radius + " km</div>");
             }
+            //Otherwise display the results
             else { 
               venues.forEach(venue => {
                 let phoneNumber = (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone + "<br />" : venue.contact.phone);
@@ -80,6 +92,7 @@ function foursquareRequest(radius, type, coordinates) {
               });
             }
         };
+        //If the XHR failed, display an error message
         xhr.onerror = function() {
             $(".message-div").text("There was an error sending the request.");
         };
@@ -126,7 +139,7 @@ function search() {
 }
 
 /*************
-*  When the DOM is ready, attach the onClick event handler to the search button.
+*  When the DOM is ready, attach the onClick event handler to the search button and the To Top button
 *************/
 $(document).ready(function() {
     $("#search-button").on("click", search);
