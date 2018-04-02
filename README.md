@@ -5,7 +5,9 @@
 Foursquare Venue Finder
 
 Author: Dave Feucht
+
 Version: 1.0
+
 Description: Simple web application which uses the Foursquare API to display a list
 of venues within a chosen radius of the user's location, with an optional type
 of venue specified by the user.
@@ -33,3 +35,6 @@ of venue specified by the user.
 
 -README
   This file
+
+Project can be built using the npm config (package.json) found in the repository.
+See this file also for additional dependencies such as babel.
