@@ -1,0 +1,24 @@
+{
+  "name": "foursquarevenuefinder",
+  "version": "1.0.0",
+  "description": "Foursquare venue finder application",
+  "main": "index.html",
+  "dependencies": {
+    "babel-cli": "^6.26.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel src -d js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davefeucht/foursquare-venue-finder.git"
+  },
+  "author": "Dave Feucht",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davefeucht/foursquare-venue-finder/issues"
+  },
+  "homepage": "https://github.com/davefeucht/foursquare-venue-finder#readme"
+}
