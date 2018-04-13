@@ -10,28 +10,47 @@ const INTENT = "checkin";
 *  Function to scroll the page back to the top
 ************/
 function toTop() {
-    $('html, body').animate({ scrollTop: 0 }, 'fast');
+    $("html, body").animate({ scrollTop: 0 }, "fast");
 }
 
 /************
-*  Function to create a CORS request so that the HTTP request can be sent cross-domain
+*  Function to create a cross-site request so that the HTTP request can be sent cross-domain
 *  Takes as parameters the HTTP method, and the URL to make the request to
-*  Returns an XMLHttpRequest object
+*  Returns a Promise object which will resolve if the request is successful and reject
+*  either if XMLHttpRequest is not supported or the request fails
 ************/
-function createCORSRequest(method, url) {
-    var xhr = new XMLHttpRequest();
-    if("withCredentials" in xhr) {
+function createAndSendRequest(method, url) {
+    return new Promise((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      if("withCredentials" in xhr) {
         xhr.open(method, url, true);
-    }
-    else if(typeof XDomainRequest !== "undefined") {
+      }
+      else if(typeof XDomainRequest !== "undefined") {
         xhr = new XDomainRequest();
         xhr.open(method, url);
-    }
-    else {
+      }
+      else {
         xhr = null;
-    }
+      }
+
+      xhr.onload = function() {
+        if(xhr.status === 200) {
+          resolve(xhr.response);
+        }
+      };
+
+      xhr.onerror = function() {
+        if(xhr === null) {
+          reject("Your browser does not support cross-domain requests");
+        }
+        else {
+          reject("A network error occurred");
+        }
+      };
  
-    return xhr;
+      xhr.send();
+      
+   });
 }
 
 /************
@@ -66,42 +85,29 @@ function foursquareRequest(radius, type, coordinates) {
       "&client_secret=" + CLIENT_SECRET + 
       "&v=" + date_string; 
 
-    //Get a new CORS request
-    let xhr = createCORSRequest("GET", url);
-
-    //Error handling if CORS is not enabled in browser
-    if(!xhr) {
-        $(".message-div").text("CORS is not supported by your browser");
-    } 
-    else {
-        //Setup the success and fail callbacks for the XHR
-        xhr.onload = function() {
-            let responseObject = JSON.parse(xhr.responseText);
-            let venues = responseObject.response.venues;
-            
-            //If there were no results, display a message
-            if(venues.length === 0) {
-                $(".results-div").append("<div class=\"no-results\">There are no " + type + "(s) within " + radius + " km</div>");
-            }
-            //Otherwise display the results
-            else { 
-              venues.forEach(venue => {
-                let phoneNumber = (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone + "<br />" : venue.contact.phone);
-                $(".results-div").append("<div class=\"venue-div " + venue.id + "\"></div>");
-                $("." + venue.id).append("<div class=\"venue-name\">" + venue.name + "</div>");
-                $("." + venue.id).append((venue.location.address !== undefined ? venue.location.address + "<br />" : " "));
-                $("." + venue.id).append((venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + " " + (venue.location.city !== undefined ? venue.location.city : " ") + "<br />");
-                $("." + venue.id).append(phoneNumber);
-              });
-            }
-        };
-        //If the XHR failed, display an error message
-        xhr.onerror = function() {
-            $(".message-div").text("There was an error sending the request.");
-        };
-
-        xhr.send();
-    }
+    //Make request
+    createAndSendRequest("GET", url).then(response => {
+      let responseObject = JSON.parse(response);
+      let venues = responseObject.response.venues;
+           
+      //If there were no results, display a message
+      if(venues.length === 0) {
+          $(".results-div").append("<div class=\"no-results\">There are no " + type + "(s) within " + radius + " km</div>");
+      }
+      //Otherwise display the results
+      else { 
+        venues.forEach(venue => {
+          let phoneNumber = (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone + "<br />" : venue.contact.phone);
+          $(".results-div").append("<div class=\"venue-div " + venue.id + "\"></div>");
+          $("." + venue.id).append("<div class=\"venue-name\">" + venue.name + "</div>");
+          $("." + venue.id).append((venue.location.address !== undefined ? venue.location.address + "<br />" : " "));
+          $("." + venue.id).append((venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + " " + (venue.location.city !== undefined ? venue.location.city : " ") + "<br />");
+          $("." + venue.id).append(phoneNumber);
+        });
+      }
+    }).catch(error => {
+      $(".message-div").text(error);
+    });
 }
 
 /*************
