@@ -125,6 +125,18 @@ function getLocation(radius, venue_type) {
 }
 
 /*************
+*  Function to reset the page after searching by un-focusing input elements and
+*  setting page zoom back to standard (since many mobile browsers zoom in when
+*  an input element is clicked.
+*************/
+function afterSearch() {
+  if(document.activeElement instanceof HTMLInputElement) {
+    document.activeElement.blur();
+  }
+
+}
+
+/*************
 *  Function which initiates the search process. This is the onClick function
 *  of the Search button. Gets the values of the input boxes, resets any messages
 *  provides validation if the radius is not entered, then calls the getLocation()
@@ -146,6 +158,9 @@ function search() {
     else {
         $(".message-div").text("Your browser does not support location services.");
     }
+
+    afterSearch();
+
 }
 
 /*************
