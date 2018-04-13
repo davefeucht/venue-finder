@@ -85,7 +85,7 @@ function foursquareRequest(radius, type, coordinates) {
       "&client_secret=" + CLIENT_SECRET + 
       "&v=" + date_string; 
 
-    //Make request
+    //Make HTTP request
     createAndSendRequest("GET", url).then(response => {
       let responseObject = JSON.parse(response);
       let venues = responseObject.response.venues;
@@ -105,6 +105,7 @@ function foursquareRequest(radius, type, coordinates) {
           $("." + venue.id).append(phoneNumber);
         });
       }
+    //If the request failed, display the error in the message div
     }).catch(error => {
       $(".message-div").text(error);
     });
