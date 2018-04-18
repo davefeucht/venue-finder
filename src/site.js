@@ -86,25 +86,46 @@ function foursquareRequest(radius, type, coordinates) {
       "&v=" + date_string; 
 
     //Make HTTP request
-    createAndSendRequest("GET", url).then(response => {
+    createAndSendRequest("GET", url)
+    .then(response => {
       let responseObject = JSON.parse(response);
       let venues = responseObject.response.venues;
+      let results = document.createElement("div");
            
       //If there were no results, display a message
       if(venues.length === 0) {
-          $(".results-div").append("<div class=\"no-results\">There are no " + type + "(s) within " + radius + " km</div>");
+          results.classList.add("no-results");
+          results.appendChild(document.createTextNode("There are no " + type + "(s) within " + radius + " km"));
       }
       //Otherwise display the results
       else { 
+        results.classList.add("results-detail");
+
         venues.forEach(venue => {
-          let phoneNumber = (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone + "<br />" : venue.contact.phone);
-          $(".results-div").append("<div class=\"venue-div " + venue.id + "\"></div>");
-          $("." + venue.id).append("<div class=\"venue-name\">" + venue.name + "</div>");
-          $("." + venue.id).append((venue.location.address !== undefined ? venue.location.address + "<br />" : " "));
-          $("." + venue.id).append((venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + " " + (venue.location.city !== undefined ? venue.location.city : " ") + "<br />");
-          $("." + venue.id).append(phoneNumber);
+          
+          //Create a div for the individual venue
+          let venue_div = document.createElement("div");
+          venue_div.classList.add("venue-div");
+
+          //Create a div for the venue name and append it to the venue div
+          let venue_name = document.createElement("div");
+          venue_name.appendChild(document.createTextNode(venue.name));
+          venue_name.classList.add("venue-name");
+          venue_div.appendChild(venue_name);
+
+          //Append the text of the address and phone number to the venue div
+          venue_div.appendChild(document.createTextNode(venue.location.address !== undefined ? venue.location.address : " "));
+          venue_div.appendChild(document.createElement("br"));
+          venue_div.appendChild(document.createTextNode((venue.location.postalComde !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? venue.location.city : " ")));
+          venue_div.appendChild(document.createElement("br"));
+          venue_div.appendChild(document.createTextNode(venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone : (venue.contact.phone !== undefined ? venue.contact.phone : " ")));
+
+          //Append the venue div to the container results div
+          results.appendChild(venue_div);
         });
       }
+      //Append the full list of results to the DOM
+      $(".results-div").append(results);
     //If the request failed, display the error in the message div
     }).catch(error => {
       $(".message-div").text(error);
