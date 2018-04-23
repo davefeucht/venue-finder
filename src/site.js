@@ -25,11 +25,47 @@ function toTop() {
     $("html, body").animate({ scrollTop: 0 }, "fast");
 }
 
+/*************
+*  Function to reset the page after searching by un-focusing input elements and
+*  setting page zoom back to standard (since many mobile browsers zoom in when
+*  an input element is clicked).
+*************/
+function unFocus() {
+  if(document.activeElement instanceof HTMLInputElement) {
+    document.activeElement.blur();
+  }
+}
+
 /************
 *  Function to display an error message
 ************/
 function displayError(error) {
-    $(".message-div").text(error.message);
+  if(error instanceof ValidationError) {
+    $(".message-div").text("Validation Error: " + error.message);
+  }
+  else if(error instanceof LocationError) {
+    $(".message-div").text("Location Error: " + error.message);
+  }
+  else {
+    $(".message-div").text("Error: " + error.message);
+  }
+}
+
+/************
+* Function to validate the form fields
+************/
+function validateFields() {
+  if($("#radius").val() < 1) {
+    throw new ValidationError("Please select a search radius");
+  }
+}
+
+/*************
+* Function to reset any validation messages which have been shown.
+*************/
+function clearValidation() {
+  $(".message-div").text("");
+  $(".radius-validation-div").text("");
 }
 
 /************
@@ -77,6 +113,13 @@ function displayResults(venues) {
 }
 
 /************
+* Function to clear results before a new search
+************/
+function clearResults() {
+  $(".results-div").text("");
+}
+
+/************
 *  Function to make the request to the Foursquare Search API endpoint
 *  Takes as parameters the search radius, type of venue, and coordinates
 *  Makes the request to the API, parses the response JSON, and updates
@@ -84,31 +127,31 @@ function displayResults(venues) {
 ************/
 function foursquareRequest(radius, type, coordinates) {
 
-    //Since radius is in kilometers, we multiply to get meters, which is what Foursquare expects
-    let radius_meters = radius * 1000;
+  //Since radius is in kilometers, we multiply to get meters, which is what Foursquare expects
+  let radius_meters = radius * 1000;
 
-    //Set up the YYYYMMDD date string
-    let now = new Date();
-    let date_string = now.getFullYear().toString() + (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
+  //Set up the YYYYMMDD date string
+  let now = new Date();
+  let date_string = now.getFullYear().toString() + (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
 
-    //Set up the full request URL
-    let url = REQUEST_BASE_URL + 
-      coordinates.latitude + "," + coordinates.longitude + 
-      "&intent=" + INTENT + 
-      "&radius=" + radius_meters +
-      "&query=" + type +
-      "&client_id=" + CLIENT_ID + 
-      "&client_secret=" + CLIENT_SECRET + 
-      "&v=" + date_string; 
+  //Set up the full request URL
+  let url = REQUEST_BASE_URL + 
+    coordinates.latitude + "," + coordinates.longitude + 
+    "&intent=" + INTENT + 
+    "&radius=" + radius_meters +
+    "&query=" + type +
+    "&client_id=" + CLIENT_ID + 
+    "&client_secret=" + CLIENT_SECRET + 
+    "&v=" + date_string; 
 
-    //Make HTTP request
-    $.get(url)
-    .done(data => {
-      displayResults(data.response.venues);
-    //If the request failed, display the error in the message div
-    }).fail(error => {
-      displayError(error);
-    });
+  //Make HTTP request
+  $.get(url)
+  .done(data => {
+    displayResults(data.response.venues);
+  //If the request failed, display the error in the message div
+  }).fail(error => {
+    displayError(error);
+  });
 }
 
 /*************
@@ -117,47 +160,11 @@ function foursquareRequest(radius, type, coordinates) {
 *  Takes as arguments the radius and the venue type.
 *************/
 function getLocation(radius, venue_type) {
-    navigator.geolocation.getCurrentPosition(position => {
-        foursquareRequest(radius, venue_type, position.coords);
-    }, error => {
-        displayError(error);
-    });
-}
-
-/*************
-*  Function to reset the page after searching by un-focusing input elements and
-*  setting page zoom back to standard (since many mobile browsers zoom in when
-*  an input element is clicked).
-*************/
-function unFocus() {
-  if(document.activeElement instanceof HTMLInputElement) {
-    document.activeElement.blur();
-  }
-
-}
-
-/*************
-* Function to reset any validation messages which have been shown.
-*************/
-function clearValidation() {
-  $(".message-div").text("");
-  $(".radius-validation-div").text("");
-}
-
-/************
-* Function to clear results before a new search
-************/
-function clearResults() {
-  $(".results-div").text("");
-}
-
-/************
-* Function to validate the form fields
-************/
-function validateFields() {
-  if($("#radius").val() < 1) {
-    throw new ValidationError("Please select a search radius");
-  }
+  navigator.geolocation.getCurrentPosition(position => {
+      foursquareRequest(radius, venue_type, position.coords);
+  }, error => {
+      displayError(error);
+  });
 }
 
 /*************
@@ -168,9 +175,11 @@ function validateFields() {
 *************/
 function search() {
 
+    //Reset the form
     clearValidation();
     clearResults();
 
+    //Try validating the form, if it fails, throw an exception
     try {
       validateFields();
     }
@@ -179,8 +188,9 @@ function search() {
       return;
     }
 
+    //If the browser supports location services, get the location, otherwise throw an exception
     if("geolocation" in navigator) {
-        getLocation($("#radius").val(), $("#venue-type").val());
+      getLocation($("#radius").val(), $("#venue-type").val());
     }
     else {
       displayError(new LocationError("Your browser does not support location services."));
