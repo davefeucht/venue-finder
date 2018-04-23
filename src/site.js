@@ -33,6 +33,50 @@ function displayError(error) {
 }
 
 /************
+*  Function to display the results of a search.
+*  Takes as parameter the object containing the returned venues
+************/
+function displayResults(venues) {
+  let results = document.createElement("div");
+           
+  //If there were no results, display a message
+  if(venues.length === 0) {
+      results.classList.add("no-results");
+      results.appendChild(document.createTextNode("No results found."));
+  }
+  //Otherwise display the results
+  else { 
+    results.classList.add("results-detail");
+
+    venues.forEach(venue => {
+        
+      //Create a div for the individual venue
+      let venue_div = document.createElement("div");
+      venue_div.classList.add("venue-div");
+
+      //Create a div for the venue name and append it to the venue div
+      let venue_name = document.createElement("div");
+      venue_name.appendChild(document.createTextNode(venue.name));
+      venue_name.classList.add("venue-name");
+      venue_div.appendChild(venue_name);
+
+      //Append the text of the address and phone number to the venue div
+      venue_div.appendChild(document.createTextNode(venue.location.address !== undefined ? venue.location.address : " "));
+      venue_div.appendChild(document.createElement("br"));
+      venue_div.appendChild(document.createTextNode((venue.location.postalComde !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? venue.location.city : " ")));
+      venue_div.appendChild(document.createElement("br"));
+      venue_div.appendChild(document.createTextNode(venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone : (venue.contact.phone !== undefined ? venue.contact.phone : " ")));
+
+      //Append the venue div to the container results div
+      results.appendChild(venue_div);
+    });
+  }
+  //Append the full list of results to the DOM
+  $(".results-div").append(results);
+  
+}
+
+/************
 *  Function to make the request to the Foursquare Search API endpoint
 *  Takes as parameters the search radius, type of venue, and coordinates
 *  Makes the request to the API, parses the response JSON, and updates
@@ -60,43 +104,7 @@ function foursquareRequest(radius, type, coordinates) {
     //Make HTTP request
     $.get(url)
     .done(data => {
-      let venues = data.response.venues;
-      let results = document.createElement("div");
-           
-      //If there were no results, display a message
-      if(venues.length === 0) {
-          results.classList.add("no-results");
-          results.appendChild(document.createTextNode("There are no " + type + "(s) within " + radius + " km"));
-      }
-      //Otherwise display the results
-      else { 
-        results.classList.add("results-detail");
-
-        venues.forEach(venue => {
-          
-          //Create a div for the individual venue
-          let venue_div = document.createElement("div");
-          venue_div.classList.add("venue-div");
-
-          //Create a div for the venue name and append it to the venue div
-          let venue_name = document.createElement("div");
-          venue_name.appendChild(document.createTextNode(venue.name));
-          venue_name.classList.add("venue-name");
-          venue_div.appendChild(venue_name);
-
-          //Append the text of the address and phone number to the venue div
-          venue_div.appendChild(document.createTextNode(venue.location.address !== undefined ? venue.location.address : " "));
-          venue_div.appendChild(document.createElement("br"));
-          venue_div.appendChild(document.createTextNode((venue.location.postalComde !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? venue.location.city : " ")));
-          venue_div.appendChild(document.createElement("br"));
-          venue_div.appendChild(document.createTextNode(venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone : (venue.contact.phone !== undefined ? venue.contact.phone : " ")));
-
-          //Append the venue div to the container results div
-          results.appendChild(venue_div);
-        });
-      }
-      //Append the full list of results to the DOM
-      $(".results-div").append(results);
+      displayResults(data.response.venues);
     //If the request failed, display the error in the message div
     }).fail(error => {
       displayError(error);
@@ -141,7 +149,6 @@ function clearValidation() {
 ************/
 function clearResults() {
   $(".results-div").text("");
-
 }
 
 /************
