@@ -6,6 +6,8 @@ const CLIENT_ID = "ZK1LL4LNA35TMQHPJORGHTWMP1LJVWLTVPHA4FCVBMLLZHJ3";
 const CLIENT_SECRET = "1KG5RCUPH0RDODKDE4KOIOAFL13KPV41AZNJE4ZN4WY1VDVP";
 const INTENT = "checkin";
 
+class ValidationError extends Error {}
+
 /************
 *  Function to scroll the page back to the top
 ************/
@@ -57,7 +59,7 @@ function createAndSendRequest(method, url) {
 *  Function to display an error message upon failure to get location
 ************/
 function displayError(error) {
-    $(".message-div").text(error.code + ": " + error.message);
+    $(".message-div").text(error.message);
 }
 
 /************
@@ -128,7 +130,7 @@ function foursquareRequest(radius, type, coordinates) {
       $(".results-div").append(results);
     //If the request failed, display the error in the message div
     }).catch(error => {
-      $(".message-div").text(error);
+      displayError(error);
     });
 }
 
@@ -148,9 +150,9 @@ function getLocation(radius, venue_type) {
 /*************
 *  Function to reset the page after searching by un-focusing input elements and
 *  setting page zoom back to standard (since many mobile browsers zoom in when
-*  an input element is clicked.
+*  an input element is clicked).
 *************/
-function afterSearch() {
+function unFocus() {
   if(document.activeElement instanceof HTMLInputElement) {
     document.activeElement.blur();
   }
@@ -178,8 +180,7 @@ function clearResults() {
 ************/
 function validateFields() {
   if($("#radius").val() < 1) {
-      $(".radius-validation-div").text("Please select a search radius");
-      return;
+    throw new ValidationError("Please select a search radius");
   }
 }
 
@@ -193,7 +194,14 @@ function search() {
 
     clearValidation();
     clearResults();
-    validateFields();
+
+    try {
+      validateFields();
+    }
+    catch (error) {
+      displayError(error); 
+      return;
+    }
 
     if("geolocation" in navigator) {
         getLocation($("#radius").val(), $("#venue-type").val());
@@ -202,8 +210,7 @@ function search() {
         $(".message-div").text("Your browser does not support location services.");
     }
 
-    afterSearch();
-
+    unFocus();
 }
 
 /*************
