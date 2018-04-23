@@ -11,29 +11,26 @@
       <span class="b-header__text">Foursquare Place Finder</span>
     </div>
     <div class="b-form">
-      <div class="radius-selector">
-      <span class="radius-selector-dropdown">
-        <select id="radius">
-          <option value="" selected>Search Radius</option>
-          <option value="1">1 km</option>
-          <option value="3">3 km</option>
-          <option value="5">5 km</option>
-          <option value="10">10 km</option>
-        </select>
-      </span>
-      <div class="radius-validation-div error-text"></div>
-      </div>
-      <div class="type-box">
+      <div class="b-text-input">
       <span class="type-box-input">
         <input type="text" id="venue-type" placeholder="Place Type (Restaurant, etc)" />
       </span>
       </div>
-      <div class="search-button">
+      <div class="b-radio b-radio_radius">
+        <input type="radio" id="radius1" name="radius" value="1">
+        <label for="radius1">1 km</label>
+        <input type="radio" id="radius3" name="radius" value="3">
+        <label for="radius3">3 km</label>
+        <input type="radio" id="radius5" name="radius" value="5">
+        <label for="radius5">5 km</label>
+      </div>
+      <div class="radius-validation-div b-error-text"></div>
+      <div class="b-button b-button_search">
         <button id="search-button">Search</button>
       </div>
     </div>
     <div class="message-div error-text"></div>
     <div class="results-div"></div>
-    <div class="to-top-button"><span><img src="img/to-top-button.png" border="0" /></span></div>
+    <div class="b-button b-button_to-top"><span><img src="img/to-top-button.png" border="0" /></span></div>
 </body>
 </html>

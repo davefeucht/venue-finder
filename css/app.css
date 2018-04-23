@@ -39,73 +39,101 @@
   }
 }
 
-/* Setup styles for the search radius dropdown select container, with media query to handle larger screens */
-.radius-selector {
-  grid-row-start: 1;
+.b-radio {
+  grid-row-start: 2;
   grid-column-start: 1;
-  margin: 5px;
+  text-align: center;
+  font-size: 120%;
+  display: none;
 }
 
 @media screen and (min-width: 700px) {
-  .radius-selector {
-    grid-column-start: 2;
+  .b-radio {
+    grid-column-start: 2; 
   }
 }
 
-/* Setup styles for the search radius dropdown select */
-.radius-selector select {
-  width: 50%;
+.b-radio input[type="radio"] {
+  opacity: 0;
 }
 
-/* Setup styles for the venue type search box container, with media query to handle larger screens */
-.type-box {
+input[type="radio"]:checked+label {
+  border-bottom: 1px solid black;
+}
+
+/* Setup styles for the search radius dropdown select container, with media query to handle larger screens */
+.b-select {
   grid-row-start: 2;
   grid-column-start: 1;
   margin: 5px;
 }
 
 @media screen and (min-width: 700px) {
-  .type-box {
+  .b-select {
+    grid-column-start: 2;
+  }
+}
+
+/* Setup styles for the search radius dropdown select */
+.b-select select {
+  width: 50%;
+}
+
+.b-select_radius {
+  display: none;
+}
+
+/* Setup styles for the venue type search box container, with media query to handle larger screens */
+.b-text-input {
+  grid-row-start: 1;
+  grid-column-start: 1;
+  text-align: center;
+  margin: 5px;
+}
+
+@media screen and (min-width: 700px) {
+  .b-text-input {
     grid-column-start: 2;
   }
 }
 
 /* Setup styles for the venue type input box */
-.type-box input {
+.b-text-input input {
   width: 50%;
 }
 
 /* Setup styles for the search button container, with media query to handle larger screens */
-.search-button {
+.b-button_search {
   grid-row-start: 3;
   grid-column-start: 1;
   margin: 10px 10px 10px 0;
+  text-align: center;
 }
 
 @media screen and (min-width: 700px) {
-  .search-button {
+  .b-button_search {
     grid-column-start: 2;
   }
 }
 
 /* Setup styles for the display of each individual venue result, with media query to handle larger screens */
-.venue-div {
+.b-result {
     border: 1px solid black;
     margin: 5px 5px 10px 5px;
     font-size: 120%;
 }
 
 @media screen and (min-width: 700px) {
-  .venue-div {
+  .b-result {
     width: 50%;
   }
 }
 
 /* Setup styles for the display of the name of each venue */
-.venue-name {
-    color: #FFFFFF;
-    background-color: var(--header-color);
-    border-bottom: 1px solid black;
+.b-header_result {
+  color: #FFFFFF;
+  background-color: var(--header-color);
+  border-bottom: 1px solid black;
 }
 
 /* Setup styles for the display of the 'No Results' message */
@@ -113,17 +141,19 @@
     margin-left: 10px;
 }
 
+.b-button {
+  cursor: pointer;
+}
+
 /* Setup styles for the display of the To Top button */
-.to-top-button {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    cursor: pointer;
+.b-button_to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
 }
 
 /* Setup styles for the display of error or validation messages */
-.error-text {
-    color: red;
-    margin: 3px;
+.b-error-text {
+  color: red;
+  margin: 3px;
 }
-

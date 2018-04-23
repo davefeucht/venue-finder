@@ -36,6 +36,22 @@ function unFocus() {
   }
 }
 
+/**************
+* Function to show the search radius selection on focus of the search field
+**************/
+function showRadius() {
+  $(".b-radio").css("display", "block");
+}
+
+/**************
+* Function to select the correct radio button when a label is clicked
+**************/
+function selectRadio(event) {
+  let radioId = $(this).attr("for");
+  console.log(radioId);
+  $("#" + radioId).trigger("click"); 
+}
+
 /************
 *  Function to display an error message
 ************/
@@ -88,12 +104,12 @@ function displayResults(venues) {
         
       //Create a div for the individual venue
       let venue_div = document.createElement("div");
-      venue_div.classList.add("venue-div");
+      venue_div.classList.add("b-result");
 
       //Create a div for the venue name and append it to the venue div
       let venue_name = document.createElement("div");
       venue_name.appendChild(document.createTextNode(venue.name));
-      venue_name.classList.add("venue-name");
+      venue_name.classList.add("b-header_result");
       venue_div.appendChild(venue_name);
 
       //Append the text of the address and phone number to the venue div
@@ -190,7 +206,7 @@ function search() {
 
     //If the browser supports location services, get the location, otherwise throw an exception
     if("geolocation" in navigator) {
-      getLocation($("#radius").val(), $("#venue-type").val());
+      getLocation($("input[name=radius]:checked").val(), $("#venue-type").val());
     }
     else {
       displayError(new LocationError("Your browser does not support location services."));
@@ -203,6 +219,8 @@ function search() {
 *  When the DOM is ready, attach the onClick event handler to the search button and the To Top button
 *************/
 $(document).ready(function() {
+    $("label").on("click", selectRadio);
+    $("#venue-type").on("focus", showRadius);
     $("#search-button").on("click", search);
     $(".to-top-button").on("click", toTop);
 });
