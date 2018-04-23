@@ -13,6 +13,12 @@ const INTENT = "checkin";
 class ValidationError extends Error {}
 
 /************
+* Setup a LocationError class which can be thrown and caught. Created so that we can
+* differentiate between different types of errors if necessary.
+************/
+class LocationError extends Error {}
+
+/************
 *  Function to scroll the page back to the top
 ************/
 function toTop() {
@@ -20,47 +26,7 @@ function toTop() {
 }
 
 /************
-*  Function to create a cross-site request so that the HTTP request can be sent cross-domain
-*  Takes as parameters the HTTP method, and the URL to make the request to
-*  Returns a Promise object which will resolve if the request is successful and reject
-*  either if XMLHttpRequest is not supported or the request fails
-************/
-function createAndSendRequest(method, url) {
-    return new Promise((resolve, reject) => {
-      var xhr = new XMLHttpRequest();
-      if("withCredentials" in xhr) {
-        xhr.open(method, url, true);
-      }
-      else if(typeof XDomainRequest !== "undefined") {
-        xhr = new XDomainRequest();
-        xhr.open(method, url);
-      }
-      else {
-        xhr = null;
-      }
-
-      xhr.onload = function() {
-        if(xhr.status === 200) {
-          resolve(xhr.response);
-        }
-      };
-
-      xhr.onerror = function() {
-        if(xhr === null) {
-          reject("Your browser does not support cross-domain requests");
-        }
-        else {
-          reject("A network error occurred");
-        }
-      };
- 
-      xhr.send();
-      
-   });
-}
-
-/************
-*  Function to display an error message upon failure to get location
+*  Function to display an error message
 ************/
 function displayError(error) {
     $(".message-div").text(error.message);
@@ -92,10 +58,9 @@ function foursquareRequest(radius, type, coordinates) {
       "&v=" + date_string; 
 
     //Make HTTP request
-    createAndSendRequest("GET", url)
-    .then(response => {
-      let responseObject = JSON.parse(response);
-      let venues = responseObject.response.venues;
+    $.get(url)
+    .done(data => {
+      let venues = data.response.venues;
       let results = document.createElement("div");
            
       //If there were no results, display a message
@@ -133,7 +98,7 @@ function foursquareRequest(radius, type, coordinates) {
       //Append the full list of results to the DOM
       $(".results-div").append(results);
     //If the request failed, display the error in the message div
-    }).catch(error => {
+    }).fail(error => {
       displayError(error);
     });
 }
@@ -211,7 +176,7 @@ function search() {
         getLocation($("#radius").val(), $("#venue-type").val());
     }
     else {
-        $(".message-div").text("Your browser does not support location services.");
+      displayError(new LocationError("Your browser does not support location services."));
     }
 
     unFocus();
