@@ -3,23 +3,30 @@
   --header-color: #7EC0EE;
 }
 
-/* Setup styles for the page header */
-.header-div {
+/* Setup styles for headers */
+.b-header {
   display: grid;
   color: #FFFFFF;
   background-color: var(--header-color);
-  grid-template-rows: 5px 30px 5px;
-  padding-left: 5px;
+  padding-left: 2%;
   border: 1px solid black;
 }
 
+/* Setup styles for the page header */
+.b-header_page {
+  grid-template-rows: 5px 30px 5px;
+}
+
 /* Setup styles for the text in the page header */
-.header-text {
+.b-header__text {
+  grid-row-start: 2;
+  font-size: 150%;
+  font-weight: bold;
   grid-row-start: 2;
 }
 
 /* Setup styles for the search form container, with media query to handle larger screens */
-.search-form {
+.b-form {
   display: grid;
   margin: 10px;
   border-bottom: 1px solid black;
@@ -27,7 +34,7 @@
 }
 
 @media screen and (min-width: 700px) {
-  .search-form {
+  .b-form {
     grid-template-columns: 20% auto 20%;
   }
 }
@@ -120,9 +127,3 @@
     margin: 3px;
 }
 
-/* Create an 'H1' style to use for headers */
-.h1 {
-  font-size: 150%;
-  font-weight: bold;
-  grid-row-start: 2;
-}
