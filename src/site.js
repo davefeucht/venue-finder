@@ -158,20 +158,42 @@ function afterSearch() {
 }
 
 /*************
-*  Function which initiates the search process. This is the onClick function
+* Function to reset any validation messages which have been shown.
+*************/
+function clearValidation() {
+  $(".message-div").text("");
+  $(".radius-validation-div").text("");
+}
+
+/************
+* Function to clear results before a new search
+************/
+function clearResults() {
+  $(".results-div").text("");
+
+}
+
+/************
+* Function to validate the form fields
+************/
+function validateFields() {
+  if($("#radius").val() < 1) {
+      $(".radius-validation-div").text("Please select a search radius");
+      return;
+  }
+}
+
+/*************
+*  Function which initiates the search process. This is the click handler function
 *  of the Search button. Gets the values of the input boxes, resets any messages
 *  provides validation if the radius is not entered, then calls the getLocation()
 *  function if geolocation functionality is detected in the browser.
 *************/
 function search() {
-    $(".message-div").text("");
-    $(".radius-validation-div").text("");
-    $(".results-div").text("");
 
-    if($("#radius").val() < 1) {
-        $(".radius-validation-div").text("Please select a search radius");
-        return;
-    }
+    clearValidation();
+    clearResults();
+    validateFields();
 
     if("geolocation" in navigator) {
         getLocation($("#radius").val(), $("#venue-type").val());
