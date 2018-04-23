@@ -17,19 +17,25 @@
       </span>
       </div>
       <div class="b-radio b-radio_radius">
-        <input type="radio" id="radius1" name="radius" value="1">
+        <div class="b-radio__radio-input b-radio__radio-input_selected">
+        <input type="radio" id="radius1" name="radius" value="1" checked="checked">
         <label for="radius1">1 km</label>
+        </div>
+        <div class="b-radio__radio-input">
         <input type="radio" id="radius3" name="radius" value="3">
         <label for="radius3">3 km</label>
+        </div>
+        <div class="b-radio__radio-input">
         <input type="radio" id="radius5" name="radius" value="5">
         <label for="radius5">5 km</label>
+        </div>
+        <div class="radius-validation-div b-error-text"></div>
       </div>
-      <div class="radius-validation-div b-error-text"></div>
       <div class="b-button b-button_search">
         <button id="search-button">Search</button>
       </div>
     </div>
-    <div class="message-div error-text"></div>
+    <div class="message-div b-error-text"></div>
     <div class="results-div"></div>
     <div class="b-button b-button_to-top"><span><img src="img/to-top-button.png" border="0" /></span></div>
 </body>

@@ -50,6 +50,8 @@ function selectRadio(event) {
   let radioId = $(this).attr("for");
   console.log(radioId);
   $("#" + radioId).trigger("click"); 
+  $("input[type=radio]").parent().removeClass("b-radio__radio-input_selected");
+  $("#" + radioId).parent().addClass("b-radio__radio-input_selected");
 }
 
 /************
@@ -57,7 +59,7 @@ function selectRadio(event) {
 ************/
 function displayError(error) {
   if(error instanceof ValidationError) {
-    $(".message-div").text("Validation Error: " + error.message);
+    $(".radius-validation-div").text("Validation Error: " + error.message);
   }
   else if(error instanceof LocationError) {
     $(".message-div").text("Location Error: " + error.message);
@@ -71,7 +73,7 @@ function displayError(error) {
 * Function to validate the form fields
 ************/
 function validateFields() {
-  if($("#radius").val() < 1) {
+  if(!$("input[name=radius]").is(":checked")) {
     throw new ValidationError("Please select a search radius");
   }
 }

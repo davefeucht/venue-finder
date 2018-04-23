@@ -43,6 +43,7 @@
   grid-row-start: 2;
   grid-column-start: 1;
   text-align: center;
+  margin: 5px;
   font-size: 120%;
   display: none;
 }
@@ -53,12 +54,19 @@
   }
 }
 
-.b-radio input[type="radio"] {
-  opacity: 0;
+.b-radio__radio-input {
+  background: #FFFFFF;  
+  padding: 5px;
+  border: 1px solid black;
+  display: inline;
 }
 
-input[type="radio"]:checked+label {
-  border-bottom: 1px solid black;
+.b-radio__radio-input_selected {
+  background: var(--header-color);  
+}
+
+.b-radio input[type="radio"] {
+  opacity: 0;
 }
 
 /* Setup styles for the search radius dropdown select container, with media query to handle larger screens */
