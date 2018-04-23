@@ -6,6 +6,10 @@ const CLIENT_ID = "ZK1LL4LNA35TMQHPJORGHTWMP1LJVWLTVPHA4FCVBMLLZHJ3";
 const CLIENT_SECRET = "1KG5RCUPH0RDODKDE4KOIOAFL13KPV41AZNJE4ZN4WY1VDVP";
 const INTENT = "checkin";
 
+/************
+* Setup a ValidationError class which can be thrown and caught. Created so that we can
+* differentiate between different types of errors if necessary.
+************/
 class ValidationError extends Error {}
 
 /************
