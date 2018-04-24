@@ -9,12 +9,17 @@
   color: #FFFFFF;
   background-color: var(--header-color);
   padding-left: 2%;
-  border: 1px solid black;
 }
 
 /* Setup styles for the page header */
 .header--page {
-  grid-template-rows: 5px 30px 5px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 8%;
+  grid-template-rows: 10% 80% 10%;
+  align-items: center;
 }
 
 /* Setup styles for the text in the page header */
@@ -29,7 +34,7 @@
 .form {
   display: grid;
   width: 100%;
-  margin: 10px 10px 10px 0;
+  margin: 15% 10px 10px 0;
   border-bottom: 1px solid black;
   grid-template-rows: 60px 50px 50px;
 }
