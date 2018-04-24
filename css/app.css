@@ -25,7 +25,7 @@
 }
 
 /* Setup styles for the text in the page header */
-.header__text {
+.header--page__text {
   grid-row-start: 2;
   font-size: 150%;
   font-weight: bold;
@@ -34,11 +34,9 @@
 
 /* Setup styles for the search form container, with media query to handle larger screens */
 .form {
-  display: grid;
   width: 100%;
-  margin: 15% 10px 10px 0;
+  margin: 20% 10px 10px 0;
   border-bottom: 1px solid black;
-  grid-template-rows: 60px 50px 50px;
 }
 
 @media screen and (min-width: 700px) {
@@ -51,19 +49,16 @@
   text-align: center;
   margin: 5px;
   font-size: 120%;
-  display: none;
 }
 
 .radio--radius {
-  grid-column-start: 1;
-  grid-template-columns: 33% 33% 33%;
-  grid-template-rows: 90%;
+  display: none;
 }
 
 .radio--radius__inputs {
   display: grid;
-  grid-row-start: 2;
-  grid-row-end: 2;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 90%;
 }
 
 @media screen and (min-width: 700px) {
@@ -104,16 +99,8 @@
 
 /* Setup styles for the venue type search box container, with media query to handle larger screens */
 .text-input {
-  grid-row-start: 1;
-  grid-column-start: 1;
   text-align: center;
   margin: 5px;
-}
-
-@media screen and (min-width: 700px) {
-  .text-input {
-    grid-column-start: 2;
-  }
 }
 
 .text-input__span {
