@@ -10,6 +10,7 @@ Requirements:
 
 Improvements:
 
+-Move search button to the right of the search box, with just an icon
 -Displaying something like "no information available" if address, phone, etc are all empty
 -Adding option to view 'tips' for each result
 -Displaying how many people are checked in at the place currently
