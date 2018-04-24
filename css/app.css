@@ -1,6 +1,7 @@
 /* Setup global CSS variables */
 :root {
   --header-color: #7EC0EE;
+  --border-color: #999999;
 }
 
 /* Setup styles for headers */
@@ -17,7 +18,8 @@
   left: 0;
   top: 0;
   width: 100%;
-  height: 8%;
+  height: 10%;
+  border-bottom: 1px solid var(--border-color);
   grid-template-rows: 10% 80% 10%;
   align-items: center;
 }
