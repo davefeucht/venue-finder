@@ -69,6 +69,8 @@
 }
 
 .radio__radio-input {
+  transition-property: background;
+  transition-duration: 500ms;
   background: #FFFFFF;  
   padding: 5px;
   border: 1px solid black;
@@ -161,7 +163,7 @@
 .button button {
   cursor: pointer;
   font-size: 120%;
-  border-radius: 10%;
+  border-radius: 8px;
 }
 
 /* Setup styles for the display of the To Top button */
