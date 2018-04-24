@@ -2,6 +2,7 @@
 :root {
   --header-color: #7EC0EE;
   --border-color: #999999;
+  --button-color-success: #7EC0EE;
 }
 
 /* Setup styles for headers */
@@ -127,10 +128,6 @@
   }
 }
 
-.results {
-
-}
-
 /* Setup styles for the display of each individual venue result, with media query to handle larger screens */
 .results__result {
     border: 1px solid black;
@@ -156,8 +153,15 @@
     margin-left: 10px;
 }
 
-.button {
+.button--success button {
+  color: #FFFFFF;
+  background: var(--button-color-success);
+}
+
+.button button {
   cursor: pointer;
+  font-size: 120%;
+  border-radius: 10%;
 }
 
 /* Setup styles for the display of the To Top button */
@@ -165,10 +169,6 @@
   position: fixed;
   bottom: 20px;
   right: 20px;
-}
-
-.validation-message {
-
 }
 
 /* Setup styles for the display of error or validation messages */
