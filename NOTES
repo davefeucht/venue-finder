@@ -1,7 +1,7 @@
 Requirements:
 
 -Optimized for phone. People will be looking up venues near them when they are out looking for somewhere to go, not primarily at home on their computer.
--User should be allowed to choose the distance radius from a dropdown with options of 1, 3, 5, 10 km. This field should be required. 
+-User should be allowed to choose the distance radius with options of 1, 3, 5 km. This field should be required. 
 -User should be allowed to enter a type of venue, i.e. 'Restaurant', 'Record shop', 'Bike shop'. This should be optional. If nothing is entered, all types of venues are searched.
 -Options should be shown at the top of the window, with the list of the results shown below.
 -If there are no results, it should give the user an indication that there are no results.
@@ -11,8 +11,6 @@ Requirements:
 Improvements:
 
 -Displaying something like "no information available" if address, phone, etc are all empty
--Displaying a loading spinner or other indicator when results are loading
 -Adding option to view 'tips' for each result
 -Displaying how many people are checked in at the place currently
 -Make Client Key and Client Secret not readable in the JS source
--Make validation message on search radius go away on change of search radius, not on click of button

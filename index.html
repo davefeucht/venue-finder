@@ -8,9 +8,10 @@
 </head>
 <body>
     <div class="header header--page">
-      <span class="header__text">Foursquare Place Finder</span>
+      <span class="header--page__text">Foursquare Place Finder</span>
     </div>
     <div class="form">
+      <form action="#">
       <div class="text-input">
       <span class="text-input__span">
         <input type="text" id="venue-type" placeholder="Place Type (Restaurant, etc)" />
@@ -33,12 +34,13 @@
         </div>
         <div class="radius-validation-div error-text"></div>
       </div>
-      <div class="button button--search">
-        <button id="search-button">Search</button>
+      <div class="button button--search button--success">
+        <button type="submit" id="search-button">Search</button>
       </div>
+      </form>
     </div>
     <div class="validation-message validation-message__error-text"></div>
     <div class="results"></div>
-    <div class="button button--to-top"><span><img src="img/to-top-button.png" border="0" /></span></div>
+    <div class="button button--to-top"><span><img src="img/to-top-button.png" alt="Back to Top" border="0" /></span></div>
 </body>
 </html>

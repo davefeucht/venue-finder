@@ -48,7 +48,6 @@ function showRadius() {
 **************/
 function selectRadio() {
   let radioId = $(this).attr("for");
-  console.log(radioId);
   $("#" + radioId).trigger("click"); 
   $("input[type=radio]").parent().removeClass("radio__radio-input--selected");
   $("#" + radioId).parent().addClass("radio__radio-input--selected");
@@ -82,8 +81,7 @@ function validateFields() {
 * Function to reset any validation messages which have been shown.
 *************/
 function clearValidation() {
-  $(".message-div").text("");
-  $(".radius-validation-div").text("");
+  $(".validation-message").text("");
 }
 
 /************
@@ -134,7 +132,8 @@ function displayResults(venues) {
 * Function to clear results before a new search
 ************/
 function clearResults() {
-  $(".results-div").text("");
+  $(".results-detail").remove();
+  $(".results__no-result-text").text(" ");
 }
 
 /************
@@ -191,38 +190,41 @@ function getLocation(radius, venue_type) {
 *  provides validation if the radius is not entered, then calls the getLocation()
 *  function if geolocation functionality is detected in the browser.
 *************/
-function search() {
+function search(event) {
 
-    //Reset the form
-    clearValidation();
-    clearResults();
+  event.preventDefault();
 
-    //Try validating the form, if it fails, throw an exception
-    try {
-      validateFields();
-    }
-    catch (error) {
-      displayError(error); 
-      return;
-    }
+  //Reset the form
+  clearValidation();
+  clearResults();
 
-    //If the browser supports location services, get the location, otherwise throw an exception
-    if("geolocation" in navigator) {
-      getLocation($("input[name=radius]:checked").val(), $("#venue-type").val());
-    }
-    else {
-      displayError(new LocationError("Your browser does not support location services."));
-    }
+  //Try validating the form, if it fails, throw an exception
+  try {
+    validateFields();
+  }
+  catch (error) {
+    displayError(error); 
+    return;
+  }
 
-    unFocus();
+  //If the browser supports location services, get the location, otherwise throw an exception
+  if("geolocation" in navigator) {
+    getLocation($("input[name=radius]:checked").val(), $("#venue-type").val());
+  }
+  else {
+    displayError(new LocationError("Your browser does not support location services."));
+  }
+
+  unFocus();
 }
 
 /*************
 *  When the DOM is ready, attach the onClick event handler to the search button and the To Top button
 *************/
-$(document).ready(function() {
-    $("label").on("click", selectRadio);
-    $(".text-input__span input").on("focus", showRadius);
-    $(".button--search button").on("click", search);
-    $(".button--to-top img").on("click", toTop);
+$(document).ready(() => {
+  $("form").on("submit", search);
+  $("label").on("click", selectRadio);
+  $(".text-input__span input").on("focus", showRadius);
+  //$(".button--search button").on("click", search);
+  $(".button--to-top img").on("click", toTop);
 });
