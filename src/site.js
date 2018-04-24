@@ -37,20 +37,20 @@ function unFocus() {
 }
 
 /**************
-* Function to show the search radius selection on focus of the search field
-**************/
-function showRadius() {
-  $(".radio").fadeIn();
-}
-
-/**************
 * Function to select the correct radio button when a label is clicked
 **************/
 function selectRadio() {
   let radioId = $(this).attr("for");
   $("#" + radioId).trigger("click"); 
-  $("input[type=radio]").parent().removeClass("radio__radio-input--selected");
-  $("#" + radioId).parent().addClass("radio__radio-input--selected");
+  $("input[type=radio]").parent().removeClass("inputs__radio-input--selected");
+  $("#" + radioId).parent().addClass("inputs__radio-input--selected");
+}
+
+/**************
+* Function to show the search radius selection on focus of the search field
+**************/
+function showRadius() {
+  $(".radio").fadeIn();
 }
 
 /************
@@ -58,13 +58,13 @@ function selectRadio() {
 ************/
 function displayError(error) {
   if(error instanceof ValidationError) {
-    $(".radius-validation-div").text("Validation Error: " + error.message);
+    $(".validation-message--radius").text("Validation Error: " + error.message);
   }
   else if(error instanceof LocationError) {
-    $(".message-div").text("Location Error: " + error.message);
+    $(".validation-message--error").text("Location Error: " + error.message);
   }
   else {
-    $(".message-div").text("Error: " + error.message);
+    $(".validation-message--error").text("Error: " + error.message);
   }
 }
 
@@ -89,39 +89,37 @@ function clearValidation() {
 *  Takes as parameter the object containing the returned venues
 ************/
 function displayResults(venues) {
-  let results = document.createElement("div");
+  let results = $("<div>");
            
   //If there were no results, display a message
   if(venues.length === 0) {
-      results.classList.add("results__no-result-text");
-      results.appendChild(document.createTextNode("No results found."));
+      results.addClass("results__no-result-text");
+      results.append(document.createTextNode("No results found."));
   }
   //Otherwise display the results
   else { 
-    results.classList.add("results-detail");
+    results.addClass("results__detail");
 
-    venues.forEach(venue => {
+    for(let venue of venues) {
         
       //Create a div for the individual venue
-      let venue_div = document.createElement("div");
-      venue_div.classList.add("results__result");
+      let venue_div = $("<div>", {"class": "results__result"});
 
       //Create a div for the venue name and append it to the venue div
-      let venue_name = document.createElement("div");
-      venue_name.appendChild(document.createTextNode(venue.name));
-      venue_name.classList.add("result__header");
-      venue_div.appendChild(venue_name);
+      let venue_name = $("<div>", {"class": "result__header"});
+      venue_name.text(venue.name);
+      venue_div.append(venue_name);
 
       //Append the text of the address and phone number to the venue div
-      venue_div.appendChild(document.createTextNode(venue.location.address !== undefined ? venue.location.address : " "));
-      venue_div.appendChild(document.createElement("br"));
-      venue_div.appendChild(document.createTextNode((venue.location.postalComde !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? venue.location.city : " ")));
-      venue_div.appendChild(document.createElement("br"));
-      venue_div.appendChild(document.createTextNode(venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone : (venue.contact.phone !== undefined ? venue.contact.phone : " ")));
+      let address_phone = "";
+      address_phone += (venue.location.address !== undefined ? venue.location.address + "<br />" : " ");
+      address_phone += (venue.location.postalComde !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? venue.location.city + "<br />": " ");
+      address_phone += (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone : (venue.contact.phone !== undefined ? venue.contact.phone : " "));
+      venue_div.append(address_phone);
 
       //Append the venue div to the container results div
-      results.appendChild(venue_div);
-    });
+      results.append(venue_div);
+    }
   }
   //Append the full list of results to the DOM
   $(".results").append(results);
@@ -224,6 +222,6 @@ function search(event) {
 $(document).ready(() => {
   $("form").on("submit", search);
   $("label").on("click", selectRadio);
-  $(".text-input__span input").on("focus", showRadius);
+  $(".text-input input").on("focus", showRadius);
   $(".button--to-top img").on("click", toTop);
 });

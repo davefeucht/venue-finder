@@ -13,6 +13,17 @@
   padding-left: 2%;
 }
 
+/* Setup styles for buttons */
+.button button {
+  cursor: pointer;
+  font-size: 120%;
+  border-radius: 8px;
+}
+
+.button img {
+  cursor: pointer;
+}
+
 /* Setup styles for the page header */
 .header--page {
   position: fixed;
@@ -42,7 +53,7 @@
 
 @media screen and (min-width: 700px) {
   .form {
-    grid-template-columns: 20% auto 20%;
+    margin: 10% 10px 10px 0;
   }
 }
 
@@ -62,18 +73,15 @@
   grid-template-rows: 90%;
 }
 
-@media screen and (min-width: 700px) {
-  .radio--radius {
-    grid-column-start: 2; 
-  }
-}
-
-.radio__radio-input {
-  transition-property: background;
-  transition-duration: 500ms;
+.inputs__radio-input {
+  color: #999999;
+  transition: border 300ms linear, color 300ms linear;  
   background: #FFFFFF;  
   padding: 5px;
-  border: 1px solid black;
+}
+
+.inputs__radio-input label {
+  cursor: pointer;
 }
 
 .radio-input--left {
@@ -91,23 +99,19 @@
   grid-column-start: 3;
 }
 
-.radio__radio-input--selected {
-  background: var(--header-color);  
+.inputs__radio-input--selected {
+  color: #000000;
+  border-bottom: 2px solid black;
 }
 
 .radio input[type="radio"] {
   display: none;
-  opacity: 0;
 }
 
 /* Setup styles for the venue type search box container, with media query to handle larger screens */
 .text-input {
   text-align: center;
   margin: 5px;
-}
-
-.text-input__span {
-
 }
 
 /* Setup styles for the venue type input box */
@@ -118,16 +122,8 @@
 
 /* Setup styles for the search button container, with media query to handle larger screens */
 .button--search {
-  grid-row-start: 3;
-  grid-column-start: 1;
   margin: 10px 10px 10px 0;
   text-align: center;
-}
-
-@media screen and (min-width: 700px) {
-  .button--search {
-    grid-column-start: 2;
-  }
 }
 
 /* Setup styles for the display of each individual venue result, with media query to handle larger screens */
@@ -152,18 +148,13 @@
 
 /* Setup styles for the display of the 'No Results' message */
 .results__no-result-text {
+    font-size: 120%;
     margin-left: 10px;
 }
 
 .button--success button {
   color: #FFFFFF;
   background: var(--button-color-success);
-}
-
-.button button {
-  cursor: pointer;
-  font-size: 120%;
-  border-radius: 8px;
 }
 
 /* Setup styles for the display of the To Top button */
@@ -174,7 +165,7 @@
 }
 
 /* Setup styles for the display of error or validation messages */
-.validation-message__error-text {
+.validation-message {
   color: red;
   margin: 3px;
 }
