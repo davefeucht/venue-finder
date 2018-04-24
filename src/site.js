@@ -130,7 +130,7 @@ function displayResults(venues) {
 * Function to clear results before a new search
 ************/
 function clearResults() {
-  $(".results-detail").remove();
+  $(".results__detail").remove();
   $(".results__no-result-text").text(" ");
 }
 
