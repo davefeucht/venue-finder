@@ -225,6 +225,5 @@ $(document).ready(() => {
   $("form").on("submit", search);
   $("label").on("click", selectRadio);
   $(".text-input__span input").on("focus", showRadius);
-  //$(".button--search button").on("click", search);
   $(".button--to-top img").on("click", toTop);
 });
