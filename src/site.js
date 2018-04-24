@@ -40,18 +40,18 @@ function unFocus() {
 * Function to show the search radius selection on focus of the search field
 **************/
 function showRadius() {
-  $(".b-radio").css("display", "block");
+  $(".radio").fadeIn();
 }
 
 /**************
 * Function to select the correct radio button when a label is clicked
 **************/
-function selectRadio(event) {
+function selectRadio() {
   let radioId = $(this).attr("for");
   console.log(radioId);
   $("#" + radioId).trigger("click"); 
-  $("input[type=radio]").parent().removeClass("b-radio__radio-input_selected");
-  $("#" + radioId).parent().addClass("b-radio__radio-input_selected");
+  $("input[type=radio]").parent().removeClass("radio__radio-input--selected");
+  $("#" + radioId).parent().addClass("radio__radio-input--selected");
 }
 
 /************
@@ -95,7 +95,7 @@ function displayResults(venues) {
            
   //If there were no results, display a message
   if(venues.length === 0) {
-      results.classList.add("no-results");
+      results.classList.add("results__no-result-text");
       results.appendChild(document.createTextNode("No results found."));
   }
   //Otherwise display the results
@@ -106,12 +106,12 @@ function displayResults(venues) {
         
       //Create a div for the individual venue
       let venue_div = document.createElement("div");
-      venue_div.classList.add("b-result");
+      venue_div.classList.add("results__result");
 
       //Create a div for the venue name and append it to the venue div
       let venue_name = document.createElement("div");
       venue_name.appendChild(document.createTextNode(venue.name));
-      venue_name.classList.add("b-header_result");
+      venue_name.classList.add("result__header");
       venue_div.appendChild(venue_name);
 
       //Append the text of the address and phone number to the venue div
@@ -126,7 +126,7 @@ function displayResults(venues) {
     });
   }
   //Append the full list of results to the DOM
-  $(".results-div").append(results);
+  $(".results").append(results);
   
 }
 
@@ -222,7 +222,7 @@ function search() {
 *************/
 $(document).ready(function() {
     $("label").on("click", selectRadio);
-    $("#venue-type").on("focus", showRadius);
-    $("#search-button").on("click", search);
-    $(".to-top-button").on("click", toTop);
+    $(".text-input__span input").on("focus", showRadius);
+    $(".button--search button").on("click", search);
+    $(".button--to-top img").on("click", toTop);
 });

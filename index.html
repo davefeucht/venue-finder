@@ -7,36 +7,38 @@
   <script src="js/site.js"></script>
 </head>
 <body>
-    <div class="b-header b-header_page">
-      <span class="b-header__text">Foursquare Place Finder</span>
+    <div class="header header--page">
+      <span class="header__text">Foursquare Place Finder</span>
     </div>
-    <div class="b-form">
-      <div class="b-text-input">
-      <span class="type-box-input">
+    <div class="form">
+      <div class="text-input">
+      <span class="text-input__span">
         <input type="text" id="venue-type" placeholder="Place Type (Restaurant, etc)" />
       </span>
       </div>
-      <div class="b-radio b-radio_radius">
-        <div class="b-radio__radio-input b-radio__radio-input_selected">
-        <input type="radio" id="radius1" name="radius" value="1" checked="checked">
-        <label for="radius1">1 km</label>
+      <div class="radio radio--radius">
+        <div class="radio--radius__inputs">
+          <div class="radio__radio-input radio-input--left radio__radio-input--selected">
+          <input type="radio" id="radius1" name="radius" value="1" checked="checked">
+          <label for="radius1">1 km</label>
+          </div>
+          <div class="radio__radio-input radio-input--center">
+          <input type="radio" id="radius3" name="radius" value="3">
+          <label for="radius3">3 km</label>
+          </div>
+          <div class="radio__radio-input radio-input--right">
+          <input type="radio" id="radius5" name="radius" value="5">
+          <label for="radius5">5 km</label>
+          </div>
         </div>
-        <div class="b-radio__radio-input">
-        <input type="radio" id="radius3" name="radius" value="3">
-        <label for="radius3">3 km</label>
-        </div>
-        <div class="b-radio__radio-input">
-        <input type="radio" id="radius5" name="radius" value="5">
-        <label for="radius5">5 km</label>
-        </div>
-        <div class="radius-validation-div b-error-text"></div>
+        <div class="radius-validation-div error-text"></div>
       </div>
-      <div class="b-button b-button_search">
+      <div class="button button--search">
         <button id="search-button">Search</button>
       </div>
     </div>
-    <div class="message-div b-error-text"></div>
-    <div class="results-div"></div>
-    <div class="b-button b-button_to-top"><span><img src="img/to-top-button.png" border="0" /></span></div>
+    <div class="validation-message validation-message__error-text"></div>
+    <div class="results"></div>
+    <div class="button button--to-top"><span><img src="img/to-top-button.png" border="0" /></span></div>
 </body>
 </html>
