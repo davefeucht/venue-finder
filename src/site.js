@@ -222,6 +222,7 @@ function search(event) {
 $(document).ready(() => {
   $("form").on("submit", search);
   $("label").on("click", selectRadio);
+  $("label").on("click", search);
   $(".text-input input").on("focus", showRadius);
   $(".button--to-top img").on("click", toTop);
 });
