@@ -8,8 +8,22 @@ Requirements:
 -A 'jump to top' button should be displayed which will return the user to the top of the page.
 -Should display name, address and phone number of each venue result
 
+Design Choices:
+
+-Text input box first, because primarily users are searching for a type of place, not a search radius. 
+-Radius selection hidden at first, to give focus to the text input and give the page a clean and minimal initial layout. 
+-Radius search by 'radio' button, as 'toggling' between different options is a more natural action than choosing from a dropdown list. 
+-Radio buttons are ugly, so we hide the actual input, and select it based on a click on the <label> associated with the radio input. 
+-Give the label some styling so it is clear which option is selected currently.
+-Perform the search automatically if the radius is changed, thus automatically updating the results.
+-Page header is fixed at the top of the screen so that it stays there when the page is scrolled, so it is always clear to the user what they are looking at.
+-'Back to top' button fixed at bottom right so that it stays when page is scrolled, so the user can always go back to the search form easily.
+-Use jQuery for things like making HTTP requests or updating the DOM, since it adds some safety and robustness to these processes.
+-Use vanilla JavaScript for things like loops for slightly better performance, since jQuery doesn't add much here.
+
 Improvements:
 
+-Make form validation more modular so that the validateFields function doesn't rely on knowing what elements are in the form
 -Move search button to the right of the search box, with just an icon
 -Displaying something like "no information available" if address, phone, etc are all empty
 -Adding option to view 'tips' for each result

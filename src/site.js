@@ -25,12 +25,25 @@ function toTop() {
     $("html, body").animate({ scrollTop: 0 }, "fast");
 }
 
+/***********
+* Function to check if geolocation is enabled
+* Returns true if yes, false if no
+***********/
+function geolocationIsEnabled() {
+  let enabled = false;
+  if("geolocation" in navigator) {
+    enabled = true;
+  }
+
+  return enabled;
+}
+
 /*************
 *  Function to reset the page after searching by un-focusing input elements and
 *  setting page zoom back to standard (since many mobile browsers zoom in when
 *  an input element is clicked).
 *************/
-function unFocus() {
+function unFocusInputs() {
   if(document.activeElement instanceof HTMLInputElement) {
     document.activeElement.blur();
   }
@@ -47,7 +60,7 @@ function selectRadio() {
 }
 
 /**************
-* Function to fade in an element of the page based on an event.
+* Function to fade in an element of the page identified by a CSS selector passed in an event.
 * Takes a jQuery event with data {element_class: <class name>}
 **************/
 function showElement(event) {
@@ -197,7 +210,7 @@ function search(event) {
   clearValidation();
   clearResults();
 
-  //Try validating the form, if it fails, throw an exception
+  //Try validating the form. If it fails, display the error raised
   try {
     validateFields();
   }
@@ -207,14 +220,14 @@ function search(event) {
   }
 
   //If the browser supports location services, get the location, otherwise throw an exception
-  if("geolocation" in navigator) {
+  if(geolocationIsEnabled()) {
     getLocation($("input[name=radius]:checked").val(), $("#venue-type").val());
   }
   else {
     displayError(new LocationError("Your browser does not support location services."));
   }
 
-  unFocus();
+  unFocusInputs();
 }
 
 /*************
