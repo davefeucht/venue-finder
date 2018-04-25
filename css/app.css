@@ -36,6 +36,12 @@
   width: 100%;
 }
 
+@media screen and (min-width: 700px) {
+  .button--right-align {
+    width: 10%;
+  }
+}
+
 /* Set radio items to have centered content and a small margin, set font size */
 .radio {
   text-align: center;
@@ -58,7 +64,13 @@
 /* Setup style for a left-aligned text input field, if something needs to go to the right of the input */
 .text-input--left-align {
   grid-column-start: 1;
-  justify-self: end;
+  justify-self: center;
+}
+
+@media screen and (min-width: 700px) {
+  .text-input--left-align {
+    justify-self: end;
+  }
 }
 
 /* Set forms to take up full width of the screen */
