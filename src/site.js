@@ -47,10 +47,11 @@ function selectRadio() {
 }
 
 /**************
-* Function to show the search radius selection on focus of the search field
+* Function to fade in an element of the page based on an event.
+* Takes a jQuery event with data {element_class: <class name>}
 **************/
-function showRadius() {
-  $(".radio").fadeIn();
+function showElement(event) {
+  $(event.data.element_class).fadeIn();
 }
 
 /************
@@ -131,7 +132,7 @@ function displayResults(venues) {
 ************/
 function clearResults() {
   $(".results__detail").remove();
-  $(".results__no-result-text").text(" ");
+  $(".results__no-result-text").remove();
 }
 
 /************
@@ -223,6 +224,6 @@ $(document).ready(() => {
   $("form").on("submit", search);
   $("label").on("click", selectRadio);
   $("label").on("click", search);
-  $(".text-input input").on("focus", showRadius);
+  $(".text-input input").on("focus", {element_class:".radio--radius"}, showElement);
   $(".button--to-top img").on("click", toTop);
 });

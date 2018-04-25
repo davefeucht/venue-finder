@@ -3,87 +3,105 @@
   --header-color: #7EC0EE;
   --border-color: #999999;
   --button-color-success: #7EC0EE;
+  --default-font-size: 120%;
+  --header-font-size: 150%;
 }
 
-/* Setup styles for headers */
+/* Set header to have a background color and white text, to be bold, and to be slightly indented */
 .header {
-  display: grid;
   color: #FFFFFF;
   background-color: var(--header-color);
+  font-size: var(--header-font-size);
+  font-weight: bold;
   padding-left: 2%;
 }
 
-/* Setup styles for buttons */
+/* Setup buttons to have pointer cursor, set the font size, and round the corners */
 .button button {
   cursor: pointer;
-  font-size: 120%;
+  font-size: var(--default-font-size);
   border-radius: 8px;
 }
 
+/* Set image buttons to have pointer cursor so they appear to be clickable */
 .button img {
   cursor: pointer;
 }
 
+/* Set radio items to have centered content and a small margin, set font size */
+.radio {
+  text-align: center;
+  margin: 5px;
+  font-size: var(--default-font-size);
+}
+
+/* Set text input items to have centered content and a small margin. */
+.text-input {
+  text-align: center;
+  margin: 5px;
+}
+
+/* Set font size and width for actual input field in text-input. */
+.text-input input {
+  font-size: var(--default-font-size);
+  width: 100%;
+}
+
+/* Set forms to take up full width of the screen */
+.form {
+  width: 100%;
+}
+
 /* Setup styles for the page header */
 .header--page {
+  display: grid;
+  grid-template-rows: 100%;
   position: fixed;
   left: 0;
   top: 0;
   width: 100%;
-  height: 10%;
+  height: 3rem;
   border-bottom: 1px solid var(--border-color);
-  grid-template-rows: 10% 80% 10%;
   align-items: center;
 }
 
-/* Setup styles for the text in the page header */
-.header--page__text {
-  grid-row-start: 2;
-  font-size: 150%;
-  font-weight: bold;
-  grid-row-start: 2;
-}
-
-/* Setup styles for the search form container, with media query to handle larger screens */
-.form {
-  width: 100%;
-  margin: 20% 10px 10px 0;
+/* Set the search form to have a top margin to place it below the fixed header, and 
+to have a bottom border to separate it from the search results */
+.form--search {
+  margin: 4rem 10px 10px 0;
   border-bottom: 1px solid black;
 }
 
-@media screen and (min-width: 700px) {
-  .form {
-    margin: 10% 10px 10px 0;
-  }
-}
-
-.radio {
-  text-align: center;
-  margin: 5px;
-  font-size: 120%;
-}
-
+/* Set the radius element to be hidden by default */
 .radio--radius {
   display: none;
 }
 
+/* Hide the actual radio inputs in the 'radius' input so only the labels show */
+.radio--radius input[type="radio"] {
+  display: none;
+}
+
+/* Set up a grid to display the 3 radius options in a row */
 .radio--radius__inputs {
   display: grid;
   grid-template-columns: 33% 33% 33%;
   grid-template-rows: 90%;
 }
 
+/* Set text of radius options to grey by default, with a small padding */
 .inputs__radio-input {
   color: #999999;
-  transition: border 300ms linear, color 300ms linear;  
   background: #FFFFFF;  
   padding: 5px;
 }
 
+/* Set the cursor to pointer over radio labels so they appear to be clickable */
 .inputs__radio-input label {
   cursor: pointer;
 }
 
+/* Set positioning of each radio option in the CSS grid */
 .radio-input--left {
   grid-row-start: 1;
   grid-column-start: 1;
@@ -99,73 +117,63 @@
   grid-column-start: 3;
 }
 
+/* Set the text color of the selected radio option to black, add a bottom border */
 .inputs__radio-input--selected {
   color: #000000;
   border-bottom: 2px solid black;
 }
 
-.radio input[type="radio"] {
-  display: none;
-}
-
-/* Setup styles for the venue type search box container, with media query to handle larger screens */
-.text-input {
-  text-align: center;
-  margin: 5px;
-}
-
-/* Setup styles for the venue type input box */
-.text-input input {
-  font-size: 120%;
-  width: 100%;
-}
-
-/* Setup styles for the search button container, with media query to handle larger screens */
+/* Set a margin for the search button and center the content */
 .button--search {
   margin: 10px 10px 10px 0;
   text-align: center;
 }
 
-/* Setup styles for the display of each individual venue result, with media query to handle larger screens */
+/* Give individual results a border, indent them slightly, and set the font size */
 .results__result {
-    border: 1px solid black;
-    margin: 5px 5px 10px 5px;
-    font-size: 120%;
+  border: 1px solid black;
+  margin: 5px 5px 10px 5px;
+  font-size: var(--default-font-size);
 }
 
+/* On a larger screen, set the results to 50% width so they don't look enormous with a lot of 
+empty space */
 @media screen and (min-width: 700px) {
   .results__result {
     width: 50%;
   }
 }
 
-/* Setup styles for the display of the name of each venue */
+/* Give the header of each result a background color, a bottom border, and set font color to 
+white. */
 .result__header {
   color: #FFFFFF;
   background-color: var(--header-color);
   border-bottom: 1px solid black;
 }
 
-/* Setup styles for the display of the 'No Results' message */
+/* Set font size and indent the No Results text */
 .results__no-result-text {
-    font-size: 120%;
-    margin-left: 10px;
+  font-size: var(--default-font-size);
+  margin-left: 10px;
 }
 
+/* Give a 'success' button the correct text and background colors */
 .button--success button {
   color: #FFFFFF;
   background: var(--button-color-success);
 }
 
-/* Setup styles for the display of the To Top button */
+/* Position the 'to top' button in the bottom right corner */
 .button--to-top {
   position: fixed;
   bottom: 20px;
   right: 20px;
 }
 
-/* Setup styles for the display of error or validation messages */
+/* Set font size, color and indent the error or validation text */
 .validation-message {
+  font-size: var(--default-font-size);
   color: red;
-  margin: 3px;
+  margin-left: 10px;
 }
