@@ -21,11 +21,19 @@
   cursor: pointer;
   font-size: var(--default-font-size);
   border-radius: 8px;
+  margin: 5px;
 }
 
 /* Set image buttons to have pointer cursor so they appear to be clickable */
 .button img {
   cursor: pointer;
+}
+
+/* Setup style for right-aligned button, in case something needs to go to the left of the button */
+.button--right-align {
+  grid-column-start: 2;
+  justify-self: start;
+  width: 100%;
 }
 
 /* Set radio items to have centered content and a small margin, set font size */
@@ -44,12 +52,34 @@
 /* Set font size and width for actual input field in text-input. */
 .text-input input {
   font-size: var(--default-font-size);
-  width: 100%;
+  width: 90%;
+}
+
+/* Setup style for a left-aligned text input field, if something needs to go to the right of the input */
+.text-input--left-align {
+  grid-column-start: 1;
+  justify-self: end;
 }
 
 /* Set forms to take up full width of the screen */
 .form {
   width: 100%;
+  margin: 3rem 10px 10px 0;
+  border-bottom: 1px solid black;
+}
+
+.form__text-inputs {
+  display: grid;
+  grid-template-columns: 80% 20%;
+  justify-items: center;
+  align-items: center;
+}
+
+@media screen and (min-width: 700px) {
+  .form__text-inputs {
+    grid-template-columns: 50% 50%;
+    justify-items: center;
+  }
 }
 
 /* Setup styles for the page header */
@@ -124,8 +154,24 @@ to have a bottom border to separate it from the search results */
 }
 
 /* Set a margin for the search button and center the content */
+/*
 .button--search {
   margin: 10px 10px 10px 0;
+  text-align: center;
+}
+
+@media screen and (min-width: 700px) {
+  .button--search {
+    text-align: left;
+  }
+}
+*/
+
+/* Setup styles for the search button */
+.button--search button {
+  width: 70%;
+  margin: 0 auto;
+  padding: 0;
   text-align: center;
 }
 
