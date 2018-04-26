@@ -142,8 +142,9 @@ function displayResults(venues) {
       venue_div.append(venue_name);
 
       //Append the text of the address and phone number to the venue div
-      let address_phone = getAddressPhoneString(venue);
-      venue_div.append(address_phone);
+      let venue_details = $("<div>", {"class": "result__details"});
+      venue_details.html(getAddressPhoneString(venue));
+      venue_div.append(venue_details);
 
       //Append the venue div to the container results div
       results.append(venue_div);
