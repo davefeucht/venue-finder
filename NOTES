@@ -23,10 +23,9 @@ Design Choices:
 
 Improvements:
 
--Update page title to be more descriptive, like "Where do you want to go?"
 -Add short text indicating what the user should type in the search box
--Change placeholder text in search box to something very simple like 'Place name'
 -Make form validation more modular so that the validateFields function doesn't rely on knowing what elements are in the form
 -Adding 'likes' for each result
+-Add link to Google Maps search for each venue based on location
 -Displaying how many people are checked in at the place currently
 -Make Client Key and Client Secret not readable in the JS source
