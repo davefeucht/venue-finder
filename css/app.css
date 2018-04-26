@@ -4,6 +4,7 @@
   --border-color: #999999;
   --button-color-success: #7EC0EE;
   --default-font-size: 120%;
+  --text-input-font-size: 100%;
   --header-font-size: 150%;
 }
 
@@ -57,12 +58,13 @@
 
 /* Set font size and width for actual input field in text-input. */
 .text-input input {
-  font-size: var(--default-font-size);
+  font-size: var(--text-input-font-size);
   width: 90%;
 }
 
 /* Setup style for a left-aligned text input field, if something needs to go to the right of the input */
 .text-input--left-align {
+  width: 90%;
   grid-column-start: 1;
   justify-self: center;
 }
