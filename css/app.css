@@ -195,6 +195,12 @@ white. */
   color: #FFFFFF;
   background-color: var(--header-color);
   border-bottom: 1px solid black;
+  padding-left: 5px;
+}
+
+/* Indent the address and phone number information of each result */
+.result__details {
+  margin-left: 10px;
 }
 
 /* Set font size and indent the No Results text */
