@@ -98,6 +98,23 @@ function clearValidation() {
   $(".validation-message").text("");
 }
 
+/*************
+* Function to create a string for the address and phone information for a venue.
+*************/
+function getAddressPhoneString(venue) {
+  let address_phone = "";
+  if(!venue.location.address && !venue.location.postalCode && !venue.contact.formattedPhone && !venue.contact.phone) {
+    address_phone = "No information available";
+  }
+  else {
+    address_phone += (venue.location.address !== undefined ? venue.location.address + "<br />" : " ");
+    address_phone += (venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? venue.location.city + "<br />": " ");
+    address_phone += (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone : (venue.contact.phone !== undefined ? venue.contact.phone : " "));
+  }
+  
+  return address_phone;
+}
+
 /************
 *  Function to display the results of a search.
 *  Takes as parameter the object containing the returned venues
@@ -125,10 +142,7 @@ function displayResults(venues) {
       venue_div.append(venue_name);
 
       //Append the text of the address and phone number to the venue div
-      let address_phone = "";
-      address_phone += (venue.location.address !== undefined ? venue.location.address + "<br />" : " ");
-      address_phone += (venue.location.postalComde !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? venue.location.city + "<br />": " ");
-      address_phone += (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone : (venue.contact.phone !== undefined ? venue.contact.phone : " "));
+      let address_phone = getAddressPhoneString(venue);
       venue_div.append(address_phone);
 
       //Append the venue div to the container results div
@@ -149,6 +163,32 @@ function clearResults() {
 }
 
 /************
+* Function to create the appropriate date string for the Foursquare request
+************/
+function getFormattedDateString() {
+  let now = new Date();
+  let date_string = now.getFullYear().toString() + 
+    (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + 
+    (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
+  
+  return date_string;
+}
+
+function getFoursquareRequestURL(coordinates, radius, type, date_string) {
+  //Set up the full request URL
+  let url = REQUEST_BASE_URL + 
+    coordinates.latitude + "," + coordinates.longitude + 
+    "&intent=" + INTENT + 
+    "&radius=" + radius +
+    "&query=" + type +
+    "&client_id=" + CLIENT_ID + 
+    "&client_secret=" + CLIENT_SECRET + 
+    "&v=" + date_string; 
+  
+  return url;
+}
+
+/************
 *  Function to make the request to the Foursquare Search API endpoint
 *  Takes as parameters the search radius, type of venue, and coordinates
 *  Makes the request to the API, parses the response JSON, and updates
@@ -160,18 +200,10 @@ function foursquareRequest(radius, type, coordinates) {
   let radius_meters = radius * 1000;
 
   //Set up the YYYYMMDD date string
-  let now = new Date();
-  let date_string = now.getFullYear().toString() + (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
+  let date_string = getFormattedDateString();
 
   //Set up the full request URL
-  let url = REQUEST_BASE_URL + 
-    coordinates.latitude + "," + coordinates.longitude + 
-    "&intent=" + INTENT + 
-    "&radius=" + radius_meters +
-    "&query=" + type +
-    "&client_id=" + CLIENT_ID + 
-    "&client_secret=" + CLIENT_SECRET + 
-    "&v=" + date_string; 
+  let url = getFoursquareRequestURL(coordinates, radius_meters, type, date_string);
 
   //Make HTTP request
   $.get(url)
