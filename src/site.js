@@ -103,7 +103,7 @@ function clearValidation() {
 *************/
 function getAddressPhoneString(venue) {
   let address_phone = "";
-  if(!venue.location.address && !venue.location.postalCode && !venue.contact.formattedPhone && !venue.contact.phone) {
+  if(venue.location.address === undefined && venue.location.postalCode === undefined && venue.contact.formattedPhone === undefined && venue.contact.phone === undefined) {
     address_phone = "No information available";
   }
   else {
