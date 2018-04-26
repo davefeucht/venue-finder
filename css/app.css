@@ -80,6 +80,7 @@
   border-bottom: 1px solid black;
 }
 
+/* Set up a grid in which to display the text inputs of the form */
 .form__text-inputs {
   display: grid;
   grid-template-columns: 80% 20%;
@@ -165,21 +166,7 @@ to have a bottom border to separate it from the search results */
   border-bottom: 2px solid black;
 }
 
-/* Set a margin for the search button and center the content */
-/*
-.button--search {
-  margin: 10px 10px 10px 0;
-  text-align: center;
-}
-
-@media screen and (min-width: 700px) {
-  .button--search {
-    text-align: left;
-  }
-}
-*/
-
-/* Setup styles for the search button */
+/* Set search button to 70% width, and center the text. margin: 0 auto to make it work in Safari  */
 .button--search button {
   width: 70%;
   margin: 0 auto;
