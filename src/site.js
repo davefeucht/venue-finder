@@ -170,7 +170,7 @@ function getFormattedDateString() {
   let now = new Date();
   let date_string = now.getFullYear().toString() + 
     (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + 
-    (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
+    (now.getDate() < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
   
   return date_string;
 }
