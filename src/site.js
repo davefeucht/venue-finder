@@ -103,12 +103,12 @@ function clearValidation() {
 *************/
 function getAddressPhoneString(venue) {
   let address_phone = "";
-  if(venue.location.address === undefined && venue.location.postalCode === undefined && venue.contact.formattedPhone === undefined && venue.contact.phone === undefined) {
+  if(venue.location.address === undefined && venue.location.postalCode === undefined && venue.location.city === undefined && venue.contact.formattedPhone === undefined && venue.contact.phone === undefined) {
     address_phone = "No information available";
   }
   else {
     address_phone += (venue.location.address !== undefined ? venue.location.address + "<br />" : " ");
-    address_phone += (venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? venue.location.city + "<br />": " ");
+    address_phone += (venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? " " + venue.location.city + "<br />": " ");
     address_phone += (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone : (venue.contact.phone !== undefined ? venue.contact.phone : " "));
   }
   
