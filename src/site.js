@@ -288,7 +288,6 @@ function clearResults() {
   $(".results__no-result-text").remove();
 }
 
-
 /*************
 *  Function which initiates the search process. This is the click handler function
 *  of the Search button. Gets the values of the input boxes, resets any messages
