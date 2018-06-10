@@ -1,11 +1,5 @@
 "use strict";
 
-//Setup constants to hold parameters of the HTTP requests which won't change based on user input
-const REQUEST_BASE_URL = "https://api.foursquare.com/v2/venues/search?ll=";
-const CLIENT_ID = "ZK1LL4LNA35TMQHPJORGHTWMP1LJVWLTVPHA4FCVBMLLZHJ3";
-const CLIENT_SECRET = "1KG5RCUPH0RDODKDE4KOIOAFL13KPV41AZNJE4ZN4WY1VDVP";
-const INTENT = "checkin";
-
 /************
 * Setup a ValidationError class which can be thrown and caught. Created so that we can
 * differentiate between different types of errors if necessary.
@@ -17,6 +11,166 @@ class ValidationError extends Error {}
 * differentiate between different types of errors if necessary.
 ************/
 class LocationError extends Error {}
+
+
+function AppError(error) {
+  const originalError = error; 
+  
+  /************
+  *  Function to display an error message
+  ************/
+  function displayError() {
+    if(originalError instanceof ValidationError) {
+      $(".validation-message--error").text("Validation Error: " + originalError.message);
+    }
+    else if(originalError instanceof LocationError) {
+      $(".validation-message--error").text("Location Error: " + originalError.message);
+    }
+    else {
+      $(".validation-message--error").text("Error: " + originalError.message);
+    }
+  }
+
+  return {
+    displayError: displayError
+  }
+
+}
+
+function Location() {
+  let location = {}
+
+  /*************
+  *  Function which gets the location of the user, and then initiates the call to
+  *  the Foursquare API endpoint.
+  *  Takes as arguments the radius and the venue type.
+  *************/
+  function getLocation() {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(position => {
+        location = position.coords;
+        resolve(location);
+        //foursquareRequest(radius, venue_type, position.coords);
+      }, error => {
+        AppError(error).displayError(); 
+        reject(error);
+      });
+    });
+
+    return location;
+  }
+
+  return {
+    getLocation: getLocation
+  }
+
+}
+
+function Venue(venueName, venueAddress, venuePostalCode, venueCity) { 
+  const name = venueName;
+  const address = venueAddress;
+  const postalCode = venuePostalCode;
+  const city = venueCity;
+
+  /*************
+  * Function to create a string for the address and phone information for a venue.
+  *************/
+  function getAddressPhoneString() {
+    let address_phone = "";
+    if(address === undefined && postalCode === undefined && city === undefined) { 
+      address_phone = "No information available";
+    }
+    else {
+      address_phone += (address !== undefined ? address + "<br />" : " ");
+      address_phone += (postalCode !== undefined ? postalCode : " ") + (city !== undefined ? " " + city + "<br />": " ");
+    }
+  
+    return address_phone;
+  }
+
+  function getName() {
+    if(name === undefined) {
+      return "No name available";
+    }
+    else {
+      return name;
+    }
+  }
+
+  return {
+    getAddressPhoneString: getAddressPhoneString,
+    getName: getName
+  }
+}
+
+function Request() {
+  //Setup constants to hold parameters of the HTTP requests which won't change based on user input
+  const REQUEST_BASE_URL = "https://api.foursquare.com/v2/venues/search?ll=";
+  const CLIENT_ID = "ZK1LL4LNA35TMQHPJORGHTWMP1LJVWLTVPHA4FCVBMLLZHJ3";
+  const CLIENT_SECRET = "1KG5RCUPH0RDODKDE4KOIOAFL13KPV41AZNJE4ZN4WY1VDVP";
+  const INTENT = "checkin";
+
+  /************
+  * Function to create the appropriate date string for the Foursquare request
+  ************/
+  function getFormattedDateString() {
+    let now = new Date();
+    let date_string = now.getFullYear().toString() + 
+      (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + 
+      (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
+    
+    return date_string;
+  }
+
+  /***************
+  * Function to build the Foursquare request URL
+  ***************/
+  function getFoursquareRequestURL(coordinates, radius, type, date_string) {
+    //Set up the full request URL
+    let url = REQUEST_BASE_URL + 
+      coordinates.latitude + "," + coordinates.longitude + 
+      "&intent=" + INTENT + 
+      "&radius=" + radius +
+      "&query=" + type +
+      "&client_id=" + CLIENT_ID + 
+      "&client_secret=" + CLIENT_SECRET + 
+      "&v=" + date_string; 
+    
+    return url;
+  }
+
+  /************
+  *  Function to make the request to the Foursquare Search API endpoint
+  *  Takes as parameters the search radius, type of venue, and coordinates
+  *  Makes the request to the API, parses the response JSON, and updates
+  *  the page with content.
+  ************/
+  function makeRequest(radius, type, coordinates) {
+  
+    //Since radius is in kilometers, we multiply to get meters, which is what Foursquare expects
+    let radius_meters = radius * 1000;
+  
+    //Set up the YYYYMMDD date string
+    let date_string = getFormattedDateString();
+  
+    //Set up the full request URL
+    let url = getFoursquareRequestURL(coordinates, radius_meters, type, date_string);
+  
+    //Make HTTP request
+    $.get(url)
+    .done(data => {
+      displayResults(data.response.venues);
+    //If the request failed, display the error in the message div
+    }).fail(error => {
+      AppError(error).displayError();
+    });
+  }
+
+  return {
+    makeRequest: makeRequest
+  };
+
+}
 
 /************
 *  Function to scroll the page back to the top
@@ -68,26 +222,11 @@ function showElement(event) {
 }
 
 /************
-*  Function to display an error message
-************/
-function displayError(error) {
-  if(error instanceof ValidationError) {
-    $(".validation-message--radius").text("Validation Error: " + error.message);
-  }
-  else if(error instanceof LocationError) {
-    $(".validation-message--error").text("Location Error: " + error.message);
-  }
-  else {
-    $(".validation-message--error").text("Error: " + error.message);
-  }
-}
-
-/************
 * Function to validate the form fields
 ************/
 function validateFields() {
   if(!$("input[name=radius]").is(":checked")) {
-    throw new ValidationError("Please select a search radius");
+    AppError(new ValidationError("Please select a search radius")).displayError();
   }
 }
 
@@ -98,22 +237,6 @@ function clearValidation() {
   $(".validation-message").text("");
 }
 
-/*************
-* Function to create a string for the address and phone information for a venue.
-*************/
-function getAddressPhoneString(venue) {
-  let address_phone = "";
-  if(venue.location.address === undefined && venue.location.postalCode === undefined && venue.location.city === undefined && venue.contact.formattedPhone === undefined && venue.contact.phone === undefined) {
-    address_phone = "No information available";
-  }
-  else {
-    address_phone += (venue.location.address !== undefined ? venue.location.address + "<br />" : " ");
-    address_phone += (venue.location.postalCode !== undefined ? venue.location.postalCode : " ") + (venue.location.city !== undefined ? " " + venue.location.city + "<br />": " ");
-    address_phone += (venue.contact.formattedPhone !== undefined ? venue.contact.formattedPhone : (venue.contact.phone !== undefined ? venue.contact.phone : " "));
-  }
-  
-  return address_phone;
-}
 
 /************
 *  Function to display the results of a search.
@@ -132,18 +255,20 @@ function displayResults(venues) {
     results.addClass("results__detail");
 
     for(let venue of venues) {
+      console.dir(venue);
+      const venueObject = Venue(venue.name, venue.location.address, venue.location.postalCode, venue.location.city); 
         
       //Create a div for the individual venue
       let venue_div = $("<div>", {"class": "results__result"});
 
       //Create a div for the venue name and append it to the venue div
       let venue_name = $("<div>", {"class": "result__header"});
-      venue_name.text(venue.name);
+      venue_name.text(venueObject.getName());
       venue_div.append(venue_name);
 
       //Append the text of the address and phone number to the venue div
       let venue_details = $("<div>", {"class": "result__details"});
-      venue_details.html(getAddressPhoneString(venue));
+      venue_details.html(venueObject.getAddressPhoneString());
       venue_div.append(venue_details);
 
       //Append the venue div to the container results div
@@ -163,71 +288,6 @@ function clearResults() {
   $(".results__no-result-text").remove();
 }
 
-/************
-* Function to create the appropriate date string for the Foursquare request
-************/
-function getFormattedDateString() {
-  let now = new Date();
-  let date_string = now.getFullYear().toString() + 
-    (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + 
-    (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
-  
-  return date_string;
-}
-
-function getFoursquareRequestURL(coordinates, radius, type, date_string) {
-  //Set up the full request URL
-  let url = REQUEST_BASE_URL + 
-    coordinates.latitude + "," + coordinates.longitude + 
-    "&intent=" + INTENT + 
-    "&radius=" + radius +
-    "&query=" + type +
-    "&client_id=" + CLIENT_ID + 
-    "&client_secret=" + CLIENT_SECRET + 
-    "&v=" + date_string; 
-  
-  return url;
-}
-
-/************
-*  Function to make the request to the Foursquare Search API endpoint
-*  Takes as parameters the search radius, type of venue, and coordinates
-*  Makes the request to the API, parses the response JSON, and updates
-*  the page with content.
-************/
-function foursquareRequest(radius, type, coordinates) {
-
-  //Since radius is in kilometers, we multiply to get meters, which is what Foursquare expects
-  let radius_meters = radius * 1000;
-
-  //Set up the YYYYMMDD date string
-  let date_string = getFormattedDateString();
-
-  //Set up the full request URL
-  let url = getFoursquareRequestURL(coordinates, radius_meters, type, date_string);
-
-  //Make HTTP request
-  $.get(url)
-  .done(data => {
-    displayResults(data.response.venues);
-  //If the request failed, display the error in the message div
-  }).fail(error => {
-    displayError(error);
-  });
-}
-
-/*************
-*  Function which gets the location of the user, and then initiates the call to
-*  the Foursquare API endpoint.
-*  Takes as arguments the radius and the venue type.
-*************/
-function getLocation(radius, venue_type) {
-  navigator.geolocation.getCurrentPosition(position => {
-      foursquareRequest(radius, venue_type, position.coords);
-  }, error => {
-      displayError(error);
-  });
-}
 
 /*************
 *  Function which initiates the search process. This is the click handler function
@@ -248,16 +308,23 @@ function search(event) {
     validateFields();
   }
   catch (error) {
-    displayError(error); 
+    AppError(error).displayError(); 
     return;
   }
 
   //If the browser supports location services, get the location, otherwise throw an exception
   if(geolocationIsEnabled()) {
-    getLocation($("input[name=radius]:checked").val(), $("#venue-type").val());
+    const location = Location();
+    const request = Request();
+    location.getLocation()
+      .then((coordinates) => {
+        request.makeRequest($(".radio--radius input:checked").val(), $(".text-input input").val(), coordinates);
+      }).catch((error) => {
+        AppError(new LocationError("Could not get location.")).displayError();
+      });
   }
   else {
-    displayError(new LocationError("Your browser does not support location services."));
+    AppError(new LocationError("Your browser does not support location services.")).displayError();
   }
 
   unFocusInputs();
