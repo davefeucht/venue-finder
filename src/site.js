@@ -38,26 +38,21 @@ function AppError(error) {
 }
 
 function Location() {
-  let location = {}
 
   /*************
-  *  Function which gets the location of the user, and then initiates the call to
-  *  the Foursquare API endpoint.
-  *  Takes as arguments the radius and the venue type.
+  *  Function which gets the location of the user. 
+  *  Returns a promise for the return of the location.
   *************/
   function getLocation() {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(position => {
-        location = position.coords;
+        const location = position.coords;
         resolve(location);
-        //foursquareRequest(radius, venue_type, position.coords);
       }, error => {
         AppError(error).displayError(); 
         reject(error);
       });
     });
-
-    return location;
   }
 
   return {
@@ -73,9 +68,9 @@ function Venue(venueName, venueAddress, venuePostalCode, venueCity) {
   const city = venueCity;
 
   /*************
-  * Function to create a string for the address and phone information for a venue.
+  * Function to create a string for the address information for a venue.
   *************/
-  function getAddressPhoneString() {
+  function getAddressString() {
     let address_phone = "";
     if(address === undefined && postalCode === undefined && city === undefined) { 
       address_phone = "No information available";
@@ -98,7 +93,7 @@ function Venue(venueName, venueAddress, venuePostalCode, venueCity) {
   }
 
   return {
-    getAddressPhoneString: getAddressPhoneString,
+    getAddressString: getAddressString,
     getName: getName
   }
 }
@@ -268,7 +263,7 @@ function displayResults(venues) {
 
       //Append the text of the address and phone number to the venue div
       let venue_details = $("<div>", {"class": "result__details"});
-      venue_details.html(venueObject.getAddressPhoneString());
+      venue_details.html(venueObject.getAddressString());
       venue_div.append(venue_details);
 
       //Append the venue div to the container results div
