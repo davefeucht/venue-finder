@@ -9,7 +9,7 @@ Author: Dave Feucht
 Version: 2.0
 
 Description: Simple web application which uses the Foursquare API to display a list
-of venues within a chosen radius of the user's location, with an optional type
+of venues within a chosen radius of the user's location, with an optional name
 of venue specified by the user.
 
 
