@@ -14,10 +14,9 @@ class LocationError extends Error {}
 
 /**************
 * Factory function to represent an Application Error
-* Takes an error object and exposes a method to display 
-* the error.
+* Takes an error object and exposes a method to display the error in the form.
 **************/
-function AppError(error) { 
+function AppError(error) {
   const originalError = error; 
   
   /************
@@ -43,15 +42,26 @@ function AppError(error) {
 
 /**************
 * Factory function to represent a Location
-* Exposes a function to Return a promise for 
-* getting the location of the user using the 
-* browser geolocation API.
+* Exposes a function to Return a promise for getting the location of the user using the browser geolocation API.
 **************/
 function Location() {
 
+  /***********
+  * Function to check if geolocation is enabled
+  * Returns true if yes, false if no
+  ***********/
+  function geolocationIsEnabled() {
+    let enabled = false;
+    if("geolocation" in navigator) {
+      enabled = true;
+    }
+  
+    return enabled;
+  }
+
   /*************
   *  Function which gets the location of the user. 
-  *  Returns a promise for the return of the location.
+  *  Returns a promise for the return of the location from the browser geolocation API.
   *************/
   function getLocation() {
     return new Promise((resolve, reject) => {
@@ -66,6 +76,7 @@ function Location() {
   }
 
   return {
+    geolocationIsEnabled: geolocationIsEnabled,
     getLocation: getLocation
   };
 
@@ -73,9 +84,7 @@ function Location() {
 
 /***************
 * Factory function to represent a Venue
-* Takes venue details as arguments and
-* exposes functions to get the name
-* and the address information of the venue
+* Takes venue details as arguments and exposes functions to get the formatted name and address information of the venue
 ***************/
 function Venue(venueName, venueAddress, venuePostalCode, venueCity) { 
   const name = venueName;
@@ -116,8 +125,8 @@ function Venue(venueName, venueAddress, venuePostalCode, venueCity) {
 
 /***************
 * Factory function to represent the list of results
-* Takes JSON list of result venues from search
-* Exposes method to display the results in the page
+* Takes a JSON list of result venues from search
+* Exposes a method to display the results in the page
 ***************/
 function ResultsList(resultVenues) {
 
@@ -127,7 +136,7 @@ function ResultsList(resultVenues) {
   *  Takes as parameter the object containing the returned venues
   ************/
   function displayResults() {
-    let results = $("<div>");
+    const results = $("<div>");
              
     //If there were no results, display a message
     if(venues.length === 0) {
@@ -138,19 +147,19 @@ function ResultsList(resultVenues) {
     else { 
       results.addClass("results__detail");
   
-      for(let venue of venues) {
+      for(const venue of venues) {
         const venueObject = Venue(venue.name, venue.location.address, venue.location.postalCode, venue.location.city); 
           
         //Create a div for the individual venue
-        let venue_div = $("<div>", {"class": "results__result"});
+        const venue_div = $("<div>", {"class": "results__result"});
   
         //Create a div for the venue name and append it to the venue div
-        let venue_name = $("<div>", {"class": "result__header"});
+        const venue_name = $("<div>", {"class": "result__header"});
         venue_name.text(venueObject.getName());
         venue_div.append(venue_name);
   
         //Append the text of the address and phone number to the venue div
-        let venue_details = $("<div>", {"class": "result__details"});
+        const venue_details = $("<div>", {"class": "result__details"});
         venue_details.html(venueObject.getAddressString());
         venue_div.append(venue_details);
   
@@ -170,9 +179,7 @@ function ResultsList(resultVenues) {
 
 /****************
 * Factory function to represent a Request
-* Exposes method to make a request, which uses
-* 'Private' methods to format the information 
-* needed for the request
+* Exposes method to make a request, which uses 'Private' methods to build the query string 
 ****************/
 function Request() {
   //Setup constants to hold parameters of the HTTP requests which won't change based on user input
@@ -185,11 +192,8 @@ function Request() {
   * Function to create the appropriate date string for the Foursquare request
   ************/
   function getFormattedDateString() {
-    let now = new Date();
-    let date_string = now.getFullYear().toString() + 
-      (now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString()) + 
-      (now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString());
-    
+    const now = new Date();
+    const date_string = `${now.getFullYear().toString()}${(now.getMonth() < 10 ? ("0" + (now.getMonth() + 1).toString()) : (now.getMonth() + 1).toString())}${(now.getDate < 10 ? ("0" + now.getDate().toString()) : now.getDate().toString())}`;
     return date_string;
   }
 
@@ -198,7 +202,7 @@ function Request() {
   ***************/
   function getFoursquareRequestURL(coordinates, radius, type, date_string) {
     //Set up the full request URL
-    let url = `${REQUEST_BASE_URL}${coordinates.latitude},${coordinates.longitude}&intent=${INTENT}&radius=${radius}&query=${type}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=${date_string}`;
+    const url = `${REQUEST_BASE_URL}${coordinates.latitude},${coordinates.longitude}&intent=${INTENT}&radius=${radius}&query=${type}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=${date_string}`;
     
     return url;
   }
@@ -212,13 +216,13 @@ function Request() {
   function makeRequest(radius, type, coordinates) {
   
     //Since radius is in kilometers, we multiply to get meters, which is what Foursquare expects
-    let radius_meters = radius * 1000;
+    const radius_meters = radius * 1000;
   
     //Set up the YYYYMMDD date string
-    let date_string = getFormattedDateString();
+    const date_string = getFormattedDateString();
   
     //Set up the full request URL
-    let url = getFoursquareRequestURL(coordinates, radius_meters, type, date_string);
+    const url = getFoursquareRequestURL(coordinates, radius_meters, type, date_string);
   
     //Make HTTP request
     $.get(url)
@@ -238,23 +242,14 @@ function Request() {
 }
 
 /************
+ * HELPER FUNCTIONS
+ ***********/
+
+/************
 *  Function to scroll the page back to the top
 ************/
 function toTop() {
   $("html, body").animate({ scrollTop: 0 }, "fast");
-}
-
-/***********
-* Function to check if geolocation is enabled
-* Returns true if yes, false if no
-***********/
-function geolocationIsEnabled() {
-  let enabled = false;
-  if("geolocation" in navigator) {
-    enabled = true;
-  }
-
-  return enabled;
 }
 
 /*************
@@ -272,7 +267,7 @@ function unFocusInputs() {
 * Function to select the correct radio button when a label is clicked
 **************/
 function selectRadio() {
-  let radioId = $(this).attr("for");
+  const radioId = $(this).attr("for");
   $("#" + radioId).trigger("click"); 
   $("input[type=radio]").parent().removeClass("inputs__radio-input--selected");
   $("#" + radioId).parent().addClass("inputs__radio-input--selected");
@@ -301,7 +296,6 @@ function validateFields() {
 function clearValidation() {
   $(".validation-message").text("");
 }
-
 
 /************
 * Function to clear results before a new search
@@ -335,8 +329,8 @@ function search(event) {
   }
 
   //If the browser supports location services, get the location, otherwise throw an exception
-  if(geolocationIsEnabled()) {
-    const location = Location();
+  const location = Location();
+  if(location.geolocationIsEnabled()) {
     const request = Request();
     location.getLocation()
       .then((coordinates) => {
@@ -353,7 +347,7 @@ function search(event) {
 }
 
 /*************
-*  When the DOM is ready, attach the onClick event handler to the search button and the To Top button
+*  When the DOM is ready, attach the onSubmit event handler to the search form, and the onClick handler to the Radius buttons and the To Top button
 *************/
 $(document).ready(() => {
   $("form").on("submit", search);
