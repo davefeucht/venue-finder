@@ -25,13 +25,13 @@ function AppError(error) {
   ************/
   function displayError() {
     if(originalError instanceof ValidationError) {
-      $(".validation-message--error").text("Validation Error: " + originalError.message);
+      $(".validation-message--error").text(`Validation Error: ${originalError.message}`);
     }
     else if(originalError instanceof LocationError) {
-      $(".validation-message--error").text("Location Error: " + originalError.message);
+      $(".validation-message--error").text(`Location Error: ${originalError.message}`);
     }
     else {
-      $(".validation-message--error").text("Error: " + originalError.message);
+      $(".validation-message--error").text(`Error: ${originalError.message}`);
     }
   }
 
@@ -92,8 +92,8 @@ function Venue(venueName, venueAddress, venuePostalCode, venueCity) {
       address_phone = "No information available";
     }
     else {
-      address_phone += (address !== undefined ? address + "<br />" : " ");
-      address_phone += (postalCode !== undefined ? postalCode : " ") + (city !== undefined ? " " + city + "<br />": " ");
+      address_phone += (address !== undefined ? `${address} <br />` : " ");
+      address_phone += (postalCode !== undefined ? postalCode : " ") + (city !== undefined ? ` ${city} <br />`: " ");
     }
   
     return address_phone;
@@ -199,14 +199,7 @@ function Request() {
   ***************/
   function getFoursquareRequestURL(coordinates, radius, type, date_string) {
     //Set up the full request URL
-    let url = REQUEST_BASE_URL + 
-      coordinates.latitude + "," + coordinates.longitude + 
-      "&intent=" + INTENT + 
-      "&radius=" + radius +
-      "&query=" + type +
-      "&client_id=" + CLIENT_ID + 
-      "&client_secret=" + CLIENT_SECRET + 
-      "&v=" + date_string; 
+    let url = `${REQUEST_BASE_URL}${coordinates.latitude},${coordinates.longitude}&intent=${INTENT}&radius=${radius}&query=${type}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=${date_string}`;
     
     return url;
   }
