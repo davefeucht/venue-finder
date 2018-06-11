@@ -17,7 +17,7 @@ class LocationError extends Error {}
 * Takes an error object and exposes a method to display 
 * the error.
 **************/
-function AppError(error) {
+function AppError(error) { 
   const originalError = error; 
   
   /************
@@ -131,15 +131,14 @@ function ResultsList(resultVenues) {
              
     //If there were no results, display a message
     if(venues.length === 0) {
-        results.addClass("results__no-result-text");
-        results.append(document.createTextNode("No results found."));
+      results.addClass("results__no-result-text");
+      results.append(document.createTextNode("No results found."));
     }
     //Otherwise display the results
     else { 
       results.addClass("results__detail");
   
       for(let venue of venues) {
-        console.dir(venue);
         const venueObject = Venue(venue.name, venue.location.address, venue.location.postalCode, venue.location.city); 
           
         //Create a div for the individual venue
@@ -223,13 +222,13 @@ function Request() {
   
     //Make HTTP request
     $.get(url)
-    .done(data => {
-      const results = ResultsList(data.response.venues);
-      results.displayResults();
-    //If the request failed, display the error in the message div
-    }).fail(error => {
-      AppError(error).displayError();
-    });
+      .done(data => {
+        const results = ResultsList(data.response.venues);
+        results.displayResults();
+      //If the request failed, display the error in the message div
+      }).fail(error => {
+        AppError(error).displayError();
+      });
   }
 
   return {
@@ -242,7 +241,7 @@ function Request() {
 *  Function to scroll the page back to the top
 ************/
 function toTop() {
-    $("html, body").animate({ scrollTop: 0 }, "fast");
+  $("html, body").animate({ scrollTop: 0 }, "fast");
 }
 
 /***********
