@@ -12,7 +12,11 @@ class ValidationError extends Error {}
 ************/
 class LocationError extends Error {}
 
-
+/**************
+* Factory function to represent an Application Error
+* Takes an error object and exposes a method to display 
+* the error.
+**************/
 function AppError(error) {
   const originalError = error; 
   
@@ -33,10 +37,16 @@ function AppError(error) {
 
   return {
     displayError: displayError
-  }
+  };
 
 }
 
+/**************
+* Factory function to represent a Location
+* Exposes a function to Return a promise for 
+* getting the location of the user using the 
+* browser geolocation API.
+**************/
 function Location() {
 
   /*************
@@ -57,10 +67,16 @@ function Location() {
 
   return {
     getLocation: getLocation
-  }
+  };
 
 }
 
+/***************
+* Factory function to represent a Venue
+* Takes venue details as arguments and
+* exposes functions to get the name
+* and the address information of the venue
+***************/
 function Venue(venueName, venueAddress, venuePostalCode, venueCity) { 
   const name = venueName;
   const address = venueAddress;
@@ -95,9 +111,70 @@ function Venue(venueName, venueAddress, venuePostalCode, venueCity) {
   return {
     getAddressString: getAddressString,
     getName: getName
-  }
+  };
 }
 
+/***************
+* Factory function to represent the list of results
+* Takes JSON list of result venues from search
+* Exposes method to display the results in the page
+***************/
+function ResultsList(resultVenues) {
+
+  const venues = resultVenues;
+  /************
+  *  Function to display the results of a search.
+  *  Takes as parameter the object containing the returned venues
+  ************/
+  function displayResults() {
+    let results = $("<div>");
+             
+    //If there were no results, display a message
+    if(venues.length === 0) {
+        results.addClass("results__no-result-text");
+        results.append(document.createTextNode("No results found."));
+    }
+    //Otherwise display the results
+    else { 
+      results.addClass("results__detail");
+  
+      for(let venue of venues) {
+        console.dir(venue);
+        const venueObject = Venue(venue.name, venue.location.address, venue.location.postalCode, venue.location.city); 
+          
+        //Create a div for the individual venue
+        let venue_div = $("<div>", {"class": "results__result"});
+  
+        //Create a div for the venue name and append it to the venue div
+        let venue_name = $("<div>", {"class": "result__header"});
+        venue_name.text(venueObject.getName());
+        venue_div.append(venue_name);
+  
+        //Append the text of the address and phone number to the venue div
+        let venue_details = $("<div>", {"class": "result__details"});
+        venue_details.html(venueObject.getAddressString());
+        venue_div.append(venue_details);
+  
+        //Append the venue div to the container results div
+        results.append(venue_div);
+      }
+    }
+    //Append the full list of results to the DOM
+    $(".results").append(results);
+    
+  }
+
+  return {
+    displayResults: displayResults
+  };
+}
+
+/****************
+* Factory function to represent a Request
+* Exposes method to make a request, which uses
+* 'Private' methods to format the information 
+* needed for the request
+****************/
 function Request() {
   //Setup constants to hold parameters of the HTTP requests which won't change based on user input
   const REQUEST_BASE_URL = "https://api.foursquare.com/v2/venues/search?ll=";
@@ -154,7 +231,8 @@ function Request() {
     //Make HTTP request
     $.get(url)
     .done(data => {
-      displayResults(data.response.venues);
+      const results = ResultsList(data.response.venues);
+      results.displayResults();
     //If the request failed, display the error in the message div
     }).fail(error => {
       AppError(error).displayError();
@@ -234,48 +312,6 @@ function clearValidation() {
 
 
 /************
-*  Function to display the results of a search.
-*  Takes as parameter the object containing the returned venues
-************/
-function displayResults(venues) {
-  let results = $("<div>");
-           
-  //If there were no results, display a message
-  if(venues.length === 0) {
-      results.addClass("results__no-result-text");
-      results.append(document.createTextNode("No results found."));
-  }
-  //Otherwise display the results
-  else { 
-    results.addClass("results__detail");
-
-    for(let venue of venues) {
-      console.dir(venue);
-      const venueObject = Venue(venue.name, venue.location.address, venue.location.postalCode, venue.location.city); 
-        
-      //Create a div for the individual venue
-      let venue_div = $("<div>", {"class": "results__result"});
-
-      //Create a div for the venue name and append it to the venue div
-      let venue_name = $("<div>", {"class": "result__header"});
-      venue_name.text(venueObject.getName());
-      venue_div.append(venue_name);
-
-      //Append the text of the address and phone number to the venue div
-      let venue_details = $("<div>", {"class": "result__details"});
-      venue_details.html(venueObject.getAddressString());
-      venue_div.append(venue_details);
-
-      //Append the venue div to the container results div
-      results.append(venue_div);
-    }
-  }
-  //Append the full list of results to the DOM
-  $(".results").append(results);
-  
-}
-
-/************
 * Function to clear results before a new search
 ************/
 function clearResults() {
@@ -314,7 +350,7 @@ function search(event) {
       .then((coordinates) => {
         request.makeRequest($(".radio--radius input:checked").val(), $(".text-input input").val(), coordinates);
       }).catch((error) => {
-        AppError(new LocationError("Could not get location.")).displayError();
+        AppError(new LocationError(error.message)).displayError();
       });
   }
   else {
