@@ -33,5 +33,5 @@ of venue specified by the user.
 -README
   This file
 
-Project can be built using the npm config (package.json) found in the repository.
-See this file also for additional dependencies such as babel.
+Project can be built using the npm config (package.json) and webpack config (webpack.config.js) found in the repository.
+See these files also for additional dependencies such as babel.
