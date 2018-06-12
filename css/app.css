@@ -1,6 +1,6 @@
 /* Setup global CSS variables */
 :root {
-  --header-color: #7EC0EE;
+  --header-color: #2d5be3;
   --border-color: #999999;
   --button-color-success: #7EC0EE;
   --default-font-size: 120%;
@@ -17,28 +17,15 @@
   padding-left: 2%;
 }
 
-/* Setup buttons to have pointer cursor, set the font size, and round the corners */
-.button button {
+/* Setup buttons to have pointer cursor and set the font size */
+.button-container button {
   cursor: pointer;
   font-size: var(--default-font-size);
 }
 
 /* Set image buttons to have pointer cursor so they appear to be clickable */
-.button img {
+.button-container img {
   cursor: pointer;
-}
-
-/* Setup style for right-aligned button, in case something needs to go to the left of the button */
-.button--right-align {
-  grid-column-start: 2;
-  justify-self: start;
-  width: 100%;
-}
-
-@media screen and (min-width: 700px) {
-  .button--right-align {
-    width: 10%;
-  }
 }
 
 /* Set radio items to have centered content and a small margin, set font size */
@@ -56,21 +43,7 @@
 
 /* Set font size and width for actual input field in text-input. */
 .text-input input {
-  font-size: var(--text-input-font-size);
   width: 90%;
-}
-
-/* Setup style for a left-aligned text input field, if something needs to go to the right of the input */
-.text-input--left-align {
-  width: 90%;
-  grid-column-start: 1;
-  justify-self: center;
-}
-
-@media screen and (min-width: 700px) {
-  .text-input--left-align {
-    justify-self: end;
-  }
 }
 
 /* Set forms to take up full width of the screen */
@@ -81,16 +54,14 @@
 
 /* Set up a grid in which to display the text inputs of the form */
 .form__text-inputs {
-  display: grid;
-  grid-template-columns: 80% 20%;
-  justify-items: center;
-  align-items: center;
+  display: flex;
+  justify-content: flex-start;
 }
 
-@media screen and (min-width: 700px) {
+@media only screen and (min-width: 700px) {
   .form__text-inputs {
-    grid-template-columns: 50% 50%;
-    justify-items: center;
+    margin: 10% 5% 2% 5%;
+    justify-content: center;
   }
 }
 
@@ -105,13 +76,6 @@
   height: 3rem;
   border-bottom: 1px solid var(--border-color);
   align-items: center;
-}
-
-/* Set the search form to have a top margin to place it below the fixed header, and 
-to have a bottom border to separate it from the search results */
-.form--search {
-  margin: 4rem 10px 10px 0;
-  border-bottom: 1px solid black;
 }
 
 /* Set the radius element to be hidden by default */
@@ -165,14 +129,6 @@ to have a bottom border to separate it from the search results */
   border-bottom: 2px solid black;
 }
 
-/* Set search button to 70% width, and center the text. margin: 0 auto to make it work in Safari  */
-.button--search button {
-  width: 70%;
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
-}
-
 /* Give individual results a border, indent them slightly, and set the font size */
 .results__result {
   border: 1px solid black;
@@ -194,12 +150,13 @@ white. */
   color: #FFFFFF;
   background-color: var(--header-color);
   border-bottom: 1px solid black;
-  padding-left: 5px;
+  padding: 3px 0 3px 5px;
 }
 
 /* Indent the address and phone number information of each result */
 .result__details {
   margin-left: 10px;
+  padding: 5px 0 5px 0;
 }
 
 /* Set font size and indent the No Results text */
@@ -208,14 +165,12 @@ white. */
   margin-left: 10px;
 }
 
-/* Give a 'success' button the correct text and background colors */
-.button--success button {
-  color: #FFFFFF;
-  background: var(--button-color-success);
+.input-container {
+  margin: .5em .6em;
 }
 
 /* Position the 'to top' button in the bottom right corner */
-.button--to-top {
+.button-container--to-top {
   position: fixed;
   bottom: 20px;
   right: 20px;

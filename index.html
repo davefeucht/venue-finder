@@ -5,20 +5,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" type="text/css" href="css/app.css">
-  <link rel="stylesheet" type="text/css" href="css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
 </head>
 <body>
-  <div class="header header--page pad-10">
+  <div class="header header--page">
     <span class="header--page__text">Find your favorite place</span>
   </div>
-  <div class="form pad-10">
-    <form action="#">
+  <div class="form">
+    <form class="pure-form" action="#">
     <div class="form__text-inputs">
-      <div class="text-input text-input--left-align">
+      <div class="text-input input-container">
         <input type="text" id="venue-type" placeholder="Place name" />
       </div>
-      <div class="button--right-align button--search button--success">
-        <input type="submit" class="button" id="search-button" value="🔍" />
+      <div class="input-container">
+        <input type="submit" class="button pure-button pure-button-primary" id="search-button" value="Search" />
       </div>
     </div>
     <div class="radio radio--radius">
@@ -42,7 +42,7 @@
   </div>
   <div class="validation-message validation-message--error"></div>
   <div class="results"></div>
-  <div class="button button--to-top">
+  <div class="button-container button-container--to-top">
     <img src="img/to-top-button.png" alt="Back to Top" border="0" />
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>

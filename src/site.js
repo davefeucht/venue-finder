@@ -48,5 +48,5 @@ $(document).ready(() => {
   $("label").on("click", Helpers.selectRadio);
   $("label").on("click", (e) => { search(e, location); });
   $(".text-input input").on("focus", {element_class:".radio--radius"}, Helpers.showElement);
-  $(".button--to-top img").on("click", Helpers.toTop);
+  $(".button-container--to-top img").on("click", Helpers.toTop);
 });
