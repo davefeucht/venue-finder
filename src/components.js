@@ -1,3 +1,5 @@
+/* global API_DATA */
+
 /*
 * This file contains definitions for specific error classes used for error checking
 * as well as factory functions to define objects for AppError, Location, Venue,
@@ -194,11 +196,6 @@ export function ResultsList(resultVenues) {
 * Exposes method to make a request, which uses 'Private' methods to build the query string 
 ****************/
 export function Request() {
-  //Setup constants to hold parameters of the HTTP requests which won't change based on user input
-  const REQUEST_BASE_URL = "https://api.foursquare.com/v2/venues/search?ll=";
-  const CLIENT_ID = "ZK1LL4LNA35TMQHPJORGHTWMP1LJVWLTVPHA4FCVBMLLZHJ3";
-  const CLIENT_SECRET = "1KG5RCUPH0RDODKDE4KOIOAFL13KPV41AZNJE4ZN4WY1VDVP";
-  const INTENT = "checkin";
 
   /************
   * Function to create the appropriate date string for the Foursquare request
@@ -214,7 +211,7 @@ export function Request() {
   ***************/
   function getFoursquareRequestURL(coordinates, radius, type, date_string) {
     //Set up the full request URL
-    const url = `${REQUEST_BASE_URL}${coordinates.latitude},${coordinates.longitude}&intent=${INTENT}&radius=${radius}&query=${type}&client_id=${CLIENT_ID}&client_secret=${CLIENT_SECRET}&v=${date_string}`;
+    const url = `${API_DATA.REQUEST_BASE_URL}${coordinates.latitude},${coordinates.longitude}&intent=${API_DATA.INTENT}&radius=${radius}&query=${type}&client_id=${API_DATA.CLIENT_ID}&client_secret=${API_DATA.CLIENT_SECRET}&v=${date_string}`;
     
     return url;
   }
